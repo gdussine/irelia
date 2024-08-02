@@ -1,5 +1,8 @@
 package irelia.data.dragon;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Champions {
 	Aatrox(266, "Aatrox"), Ahri(103, "Ahri"), Akali(84, "Akali"), Akshan(166, "Akshan"), Alistar(12, "Alistar"),
 	Amumu(32, "Amumu"), Anivia(34, "Anivia"), Annie(1, "Annie"), Aphelios(523, "Aphelios"), Ashe(22, "Ashe"),
@@ -40,6 +43,13 @@ public enum Champions {
 
 	private int key;
 	private String label;
+	private static final Map<Integer, Champions> keyMap;
+
+	static {
+		keyMap = new HashMap<>();
+		for (Champions c : values())
+			keyMap.put(c.getKey(), c);
+	}
 
 	private Champions(int key, String label) {
 		this.key = key;
@@ -53,5 +63,7 @@ public enum Champions {
 	public String getLabel() {
 		return label;
 	}
+
+	public static Champions getByKey(int key) {return keyMap.get(key);}
 
 }

@@ -36,9 +36,13 @@ public class ChampionsEnumBuilder extends LaunchableTool {
 		}
 		writer.append(sb.toString());
 		writer.append("\tprivate int key;private String label;\n");
+		writer.append("\tprivate static final Map<Integer, Champions> keyMap;\n");
+		writer.append("\tstatic {keyMap = new HashMap<>();for (Champions c : values())keyMap.put(c.getKey(), c);}\n");
+		
 		writer.append("\tprivate Champions(int key, String label) {this.key = key;this.label = label;}\n");
 		writer.append("\tpublic int getKey() {return key;}\n");
 		writer.append("\tpublic String getLabel() {return label;}\n");
+		writer.append("\tpublic static Champions getByKey(int key) {return keyMap.get(key);}\n");
 		writer.append("\n}\n");
 		writer.close();
 	}
