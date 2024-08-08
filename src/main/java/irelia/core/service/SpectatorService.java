@@ -17,8 +17,9 @@ public class SpectatorService extends RiotService{
 	private final static String BY_PUUID_URI = "lol/spectator/v5/active-games/by-summoner/%s";
 	
 	public CompletableFuture<CurrentGameInfo> byPuuid(String puuid) {
-		RiotRequest request = this.createAPIRequest(irelia.getPlatform(), BY_PUUID_URI, puuid);
-		return getAsync(request, new TypeReference<CurrentGameInfo>() {});
+		TypeReference<CurrentGameInfo> type = new TypeReference<CurrentGameInfo>() {};
+		RiotRequest<CurrentGameInfo> request = this.createAPIRequest(type, irelia.getPlatform(), BY_PUUID_URI, puuid);
+		return getAsync(request);
 	}
 
 }

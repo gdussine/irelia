@@ -1,41 +1,37 @@
 package irelia.core.request;
 
 import java.net.http.HttpRequest;
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CompletableFuture;
 
-public class RiotRequest implements Delayed{
+import com.fasterxml.jackson.core.type.TypeReference;
+
+public class RiotRequest<T>{
 
 	private HttpRequest request;
 	private long startTime;
+	private TypeReference<T> type;
+	private CompletableFuture<T> result;
 
-	public RiotRequest(HttpRequest request) {
+	public RiotRequest(HttpRequest request, TypeReference<T> type) {
 		this.request = request;
 		this.startTime = System.currentTimeMillis();
+		this.type = type;
 	}
 
 	public HttpRequest getRequest() {
 		return request;
 	}
-	
-	public void delay(long millis) {
-		this.startTime += millis;
+
+	public CompletableFuture<T> getResult(){
+		return result;
 	}
 
-	@Override
-	public int compareTo(Delayed o) {
-		return Long.compare(startTime, ((RiotRequest) o).startTime);
+	public TypeReference<T> getType() {
+		return type;
 	}
 
-	@Override
-	public long getDelay(TimeUnit unit) {
-		long diff = startTime - System.currentTimeMillis();
-		return unit.convert(diff, TimeUnit.MILLISECONDS);
-	}
-
-	public static class Builder {
-
-		
+	public long getStartTime() {
+		return startTime;
 	}
 
 	@Override

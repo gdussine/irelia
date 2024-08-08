@@ -18,8 +18,9 @@ public class LeagueService extends RiotService {
 	private final static String BY_SUMMONER_URI = "lol/league/v4/entries/by-summoner/%s";
 
 	public CompletableFuture<Set<LeagueEntry>> bySummoner(String summonerId) {
-		RiotRequest request = this.createAPIRequest(irelia.getPlatform(), BY_SUMMONER_URI, summonerId);
-		return getAsync(request, new TypeReference<Set<LeagueEntry>>() {});
+		TypeReference<Set<LeagueEntry>> type = new TypeReference<Set<LeagueEntry>>() {};
+		RiotRequest<Set<LeagueEntry>> request = this.createAPIRequest(type, irelia.getPlatform(), BY_SUMMONER_URI, summonerId);
+		return getAsync(request);
 	}
 
 }

@@ -15,11 +15,6 @@ import irelia.data.dragon.DDragon;
 public class ChampionsEnumBuilder extends LaunchableTool {
 
 	public void launch() throws Exception {
-		String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-		String secretPath = rootPath + "secrets.properties";
-		Properties prop = new Properties();
-		prop.load(new FileInputStream(secretPath));
-		Irelia api = new Irelia(prop.getProperty("apikey"), Platform.EUW1);
 		File javaFile = new File("src/main/java/irelia/data/dragon/Champions.java");
 		FileWriter writer = new FileWriter(javaFile);
 		writer.append("package irelia.data.dragon;\n");

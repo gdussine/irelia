@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.concurrent.CompletableFuture;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,8 +14,8 @@ import irelia.core.Region;
 import irelia.core.request.RiotRequest;
 import irelia.core.request.RiotRequestBuilder;
 import irelia.core.request.RiotRequestException;
+import irelia.core.request.RiotRequestRate;
 import irelia.core.request.RiotRequestType;
-import irelia.core.request.Status;
 import irelia.core.request.StatusObject;
 
 public class RiotService {
@@ -30,64 +29,49 @@ public class RiotService {
 
 	}
 
-	protected RiotRequest createAPIRequest(Region region, String uri, Object... args) {
-		return new RiotRequestBuilder(irelia).setRequestType(RiotRequestType.API).setPlatform(region).setURI(uri, args)
+	protected <T> RiotRequest<T> createAPIRequest(TypeReference<T> type, Region region, String uri, Object... args) {
+		return new RiotRequestBuilder<T>(irelia, type).setRequestType(RiotRequestType.API).setPlatform(region).setURI(uri, args)
 				.build();
 	}
 
-	protected RiotRequest createAPIRequest(Platform platform, String uri, Object... args) {
-		return new RiotRequestBuilder(irelia).setRequestType(RiotRequestType.API).setPlatform(platform)
+	protected <T> RiotRequest<T> createAPIRequest(TypeReference<T> type, Platform platform, String uri, Object... args) {
+		return new RiotRequestBuilder<T>(irelia, type).setRequestType(RiotRequestType.API).setPlatform(platform)
 				.setURI(uri, args).build();
 	}
 
-	protected RiotRequest createDDragonRequest(String uri, Object... args) {
-		return new RiotRequestBuilder(irelia).setRequestType(RiotRequestType.DDRAGON).setURI(uri, args).build();
+	protected <T>RiotRequest<T> createDDragonRequest(TypeReference<T> type, String uri, Object... args) {
+		return new RiotRequestBuilder<T>(irelia, type).setRequestType(RiotRequestType.DDRAGON).setURI(uri, args).build();
 	}
 
-//	protected CompletableFuture<BufferedImage> getImageAsync(RiotRequest request) {
-//		request.getRequest().uri().toString();
-//		CompletableFuture<BufferedImage> result = new CompletableFuture<BufferedImage>();
-//		irelia.getHttp().sendAsync(request.getRequest(), BodyHandlers.ofByteArray()).thenAcceptAsync(respons -> {
-//			try {
-//				if (respons.statusCode() / 100 != 2) {
-//					Status status = mapper.readValue(respons.body(), StatusObject.class).getStatus();
-//					result.completeExceptionally(new RiotRequestException(request, status));
-//				}
-//				result.complete(ImageIO.read(new ByteArrayInputStream(respons.body())));
-//			} catch (IOException e) {
-//				result.completeExceptionally(e);
-//			}
-//		});
-//		return result;
-//	}
-
-	protected CompletableFuture<InputStream> getImageAsync(RiotRequest request) {
-		request.getRequest().uri().toString();
+	protected CompletableFuture<InputStream> getInputStreamAsync(RiotRequest<?> request) {
 		CompletableFuture<InputStream> result = new CompletableFuture<InputStream>();
 		irelia.getHttp().sendAsync(request.getRequest(), BodyHandlers.ofByteArray()).thenAcceptAsync(respons -> {
+			String limitHeader = respons.headers().firstValue("x-app-rate-limit").orElse(null);
+			RiotRequestRate limit = new RiotRequestRate(limitHeader);
+			System.out.println(limit);
 			try {
-				if (respons.statusCode() / 100 != 2) {
-					Status status = mapper.readValue(respons.body().toString(), StatusObject.class).getStatus();
-					result.completeExceptionally(new RiotRequestException(request, status));
-				}
+				if (respons.statusCode() / 100 != 2)
+					throw new RiotRequestException(request,
+							mapper.readValue(respons.body(), StatusObject.class).getStatus());
 				result.complete(new ByteArrayInputStream(respons.body()));
-			} catch (JsonProcessingException e) {
+			} catch (Exception e) {
 				result.completeExceptionally(e);
 			}
 		});
 		return result;
 	}
 
-	protected <T> CompletableFuture<T> getAsync(RiotRequest request, TypeReference<T> type) {
-		CompletableFuture<T> result = new CompletableFuture<T>();
-		irelia.getHttp().sendAsync(request.getRequest(), BodyHandlers.ofString()).thenAcceptAsync(respons -> {
+	protected <T> CompletableFuture<T> getAsync(RiotRequest<T> request) {
+		CompletableFuture<T> result = new CompletableFuture<>();
+		CompletableFuture<InputStream> futureInput = this.getInputStreamAsync(request);
+		futureInput.exceptionally(e ->{
+			result.completeExceptionally(e);
+			return null;
+		}).thenAccept(in -> {
 			try {
-				if (respons.statusCode() / 100 != 2) {
-					Status status = mapper.readValue(respons.body(), StatusObject.class).getStatus();
-					result.completeExceptionally(new RiotRequestException(request, status));
-				}
-				result.complete(mapper.readValue(respons.body(), type));
-			} catch (JsonProcessingException e) {
+				T t = mapper.readValue(in, request.getType());
+				result.complete(t);
+			} catch (Exception e) {
 				result.completeExceptionally(e);
 			}
 		});

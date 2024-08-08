@@ -17,8 +17,9 @@ public class AccountService extends RiotService {
 	private final static String BY_RIOT_ID_URI = "riot/account/v1/accounts/by-riot-id/%s/%s";
 
 	public CompletableFuture<Account> byRiotId(String gameName, String tagLine) {
-		RiotRequest request = this.createAPIRequest(irelia.getRegion(), BY_RIOT_ID_URI, gameName, tagLine);
-		return getAsync(request, new TypeReference<Account>() {});
+		TypeReference<Account> type = new TypeReference<Account>() {};
+		RiotRequest<Account> request = this.createAPIRequest(type, irelia.getRegion(), BY_RIOT_ID_URI, gameName, tagLine);
+		return getAsync(request);
 	}
 
 }
