@@ -42,7 +42,7 @@ public class RiotService {
 	protected <T>RiotRequest<T> createDDragonRequest(TypeReference<T> type, String uri, Object... args) {
 		return new RiotRequestBuilder<T>(irelia, type).setRequestType(RiotRequestType.DDRAGON).setURI(uri, args).build();
 	}
-
+	
 	protected CompletableFuture<InputStream> getInputStreamAsync(RiotRequest<?> request) {
 		CompletableFuture<InputStream> result = new CompletableFuture<InputStream>();
 		irelia.getHttp().sendAsync(request.getRequest(), BodyHandlers.ofByteArray()).thenAcceptAsync(respons -> {

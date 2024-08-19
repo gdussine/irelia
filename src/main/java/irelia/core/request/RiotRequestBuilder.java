@@ -1,6 +1,9 @@
 package irelia.core.request;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.net.http.HttpRequest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -24,7 +27,6 @@ public class RiotRequestBuilder<T> {
 	public RiotRequestBuilder(Irelia riot, TypeReference<T> type) {
 		 this.riot = riot;
 		 this.type = type;
-	}
 
 	public RiotRequestBuilder<T> setRequestType(RiotRequestType requestType) {
 		this.requestType = requestType;
@@ -32,7 +34,15 @@ public class RiotRequestBuilder<T> {
 	}
 
 	public RiotRequestBuilder<T> setURI(String uri, Object... args) {
-		this.uri = uri.formatted(args);
+		Object[] encodedArgs = new String[args.length];
+		for (int i = 0; i < args.length; i++) {
+			try {
+				encodedArgs[i] = URLEncoder.encode(args[i].toString(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		this.uri = uri.formatted(encodedArgs);
 		return this;
 	}
 
