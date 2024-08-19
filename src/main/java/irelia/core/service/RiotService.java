@@ -43,25 +43,8 @@ public class RiotService {
 	protected RiotRequest createDDragonRequest(String uri, Object... args) {
 		return new RiotRequestBuilder(irelia).setRequestType(RiotRequestType.DDRAGON).setURI(uri, args).build();
 	}
-
-//	protected CompletableFuture<BufferedImage> getImageAsync(RiotRequest request) {
-//		request.getRequest().uri().toString();
-//		CompletableFuture<BufferedImage> result = new CompletableFuture<BufferedImage>();
-//		irelia.getHttp().sendAsync(request.getRequest(), BodyHandlers.ofByteArray()).thenAcceptAsync(respons -> {
-//			try {
-//				if (respons.statusCode() / 100 != 2) {
-//					Status status = mapper.readValue(respons.body(), StatusObject.class).getStatus();
-//					result.completeExceptionally(new RiotRequestException(request, status));
-//				}
-//				result.complete(ImageIO.read(new ByteArrayInputStream(respons.body())));
-//			} catch (IOException e) {
-//				result.completeExceptionally(e);
-//			}
-//		});
-//		return result;
-//	}
-
-	protected CompletableFuture<InputStream> getImageAsync(RiotRequest request) {
+	
+	protected CompletableFuture<InputStream> getInputStreamAsync(RiotRequest request) {
 		request.getRequest().uri().toString();
 		CompletableFuture<InputStream> result = new CompletableFuture<InputStream>();
 		irelia.getHttp().sendAsync(request.getRequest(), BodyHandlers.ofByteArray()).thenAcceptAsync(respons -> {

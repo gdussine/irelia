@@ -22,7 +22,8 @@ public class ChampionsEnumBuilder extends LaunchableTool {
 		Irelia api = new Irelia(prop.getProperty("apikey"), Platform.EUW1);
 		File javaFile = new File("src/main/java/irelia/data/dragon/Champions.java");
 		FileWriter writer = new FileWriter(javaFile);
-		writer.append("package irelia.data.dragon;\n");
+		writer.append("package irelia.data.dragon;\nimport java.util.Map;\nimport java.util.HashMap;\n");
+
 		writer.append("public enum Champions{\n");
 		DDragon ddragon = api.ddragon().getDDragon().join();
 		Set<Entry<String, ChampionInfo>> entries = ddragon.getChampions().entrySet();

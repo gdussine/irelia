@@ -41,13 +41,13 @@ public class DDragonService extends RiotService {
 	public CompletableFuture<InputStream> getProfileIcon(String fullname) {
 		RiotRequest request = this.createDDragonRequest(IMG_URI, getCachedDDragon().getVersion(), "profileicon",
 				fullname);
-		return getImageAsync(request);
+		return getInputStreamAsync(request);
 	}
 
 	public CompletableFuture<InputStream> getChampionIcon(Champions champion) {
 		String fullname = cachedDDragon.getChampion(champion).getImage().getFull();
 		RiotRequest request = this.createDDragonRequest(IMG_URI, getCachedDDragon().getVersion(), "champion", fullname);
-		return getImageAsync(request);
+		return getInputStreamAsync(request);
 	}
 
 

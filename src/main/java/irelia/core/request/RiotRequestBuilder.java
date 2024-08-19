@@ -1,6 +1,9 @@
 package irelia.core.request;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.net.http.HttpRequest;
 
 import irelia.core.Irelia;
@@ -19,7 +22,7 @@ public class RiotRequestBuilder {
 	private Irelia riot;
 
 	public RiotRequestBuilder(Irelia riot) {
-		 this.riot = riot;
+		this.riot = riot;
 	}
 
 	public RiotRequestBuilder setRequestType(RiotRequestType requestType) {
@@ -28,7 +31,15 @@ public class RiotRequestBuilder {
 	}
 
 	public RiotRequestBuilder setURI(String uri, Object... args) {
-		this.uri = uri.formatted(args);
+		Object[] encodedArgs = new String[args.length];
+		for (int i = 0; i < args.length; i++) {
+			try {
+				encodedArgs[i] = URLEncoder.encode(args[i].toString(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		this.uri = uri.formatted(encodedArgs);
 		return this;
 	}
 
