@@ -1,28 +1,34 @@
 package irelia.core.request;
 
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-public class RiotRequest<T>{
+public class RiotRequest<T> {
 
 	private HttpRequest request;
 	private long startTime;
 	private TypeReference<T> type;
 	private CompletableFuture<T> result;
+	private CompletableFuture<HttpResponse<byte[]>> payload;
+	private String endpoint;
 
-	public RiotRequest(HttpRequest request, TypeReference<T> type) {
+	public RiotRequest(HttpRequest request, TypeReference<T> type, String endpoint) {
 		this.request = request;
 		this.startTime = System.currentTimeMillis();
+		this.endpoint = endpoint;
 		this.type = type;
+		this.result = new CompletableFuture<>();
+		this.payload = new CompletableFuture<>();
 	}
 
 	public HttpRequest getRequest() {
 		return request;
 	}
 
-	public CompletableFuture<T> getResult(){
+	public CompletableFuture<T> getResult() {
 		return result;
 	}
 
@@ -34,10 +40,17 @@ public class RiotRequest<T>{
 		return startTime;
 	}
 
+	public String getEndpoint() {
+		return endpoint;
+	}
+
+	public CompletableFuture<HttpResponse<byte[]>> getPayload() {
+		return payload;
+	}
+
 	@Override
 	public String toString() {
 		return request.toString();
 	}
-
 
 }

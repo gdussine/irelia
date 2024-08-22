@@ -1,31 +1,32 @@
 package irelia.tools;
 
-import java.io.InputStream;
+import irelia.core.Irelia;
 
-import irelia.data.account.Account;
-import irelia.data.dragon.IconInfo;
-import irelia.data.spectator.CurrentGameInfo;
-import irelia.data.summoner.Summoner;
+public class Tracker extends LaunchableTool {
 
-public class Tracker extends LaunchableTool{
-	
 	@Override
 	public void launch() {
-		Thread trackerThread = new Thread(()->{
-			Account acc = this.api.account().byRiotId("Batman", "feur").join();
-			Summoner sum = this.api.summoner().byPuuid(acc.getPuuid()).join();
-			IconInfo ico = this.api.ddragon().getDDragon().join().getIcons().get(sum.getProfileIconId()+"");
-			InputStream in = this.api.ddragon().getProfileIcon(ico.getImage().getFull()).join();
-			System.out.println(in);
-			//CurrentGameInfo info = this.api.spectator().byPuuid(acc.getPuuid()).join();
-			//this.print(info);
-		});
-		trackerThread.start();
-		try {
-			trackerThread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		Irelia irelia = Launcher.getIrelia().start();
+		int count = 105;
+		Thread[] ts = new Thread[count];
+		for (int i = 0; i < ts.length; i++) {
+			ts[i] = new Thread(() -> {
+
+				System.out.println(irelia.account().byRiotId("Guillaume", "TOP").join());
+			});
 		}
+		for (int i = 0; i < ts.length; i++) {
+			ts[i].start();
+		}
+		for (int i = 0; i < ts.length; i++) {
+			try {
+				ts[i].join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		irelia.stop();
 	}
 
 }

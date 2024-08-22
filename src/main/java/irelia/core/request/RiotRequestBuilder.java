@@ -2,7 +2,6 @@ package irelia.core.request;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.net.http.HttpRequest;
 
@@ -23,10 +22,12 @@ public class RiotRequestBuilder<T> {
 	private RiotRequestType requestType;
 	private Irelia riot;
 	private TypeReference<T> type;
+	private String endpoint;
 
 	public RiotRequestBuilder(Irelia riot, TypeReference<T> type) {
-		 this.riot = riot;
-		 this.type = type;
+		this.riot = riot;
+		this.type = type;
+	}
 
 	public RiotRequestBuilder<T> setRequestType(RiotRequestType requestType) {
 		this.requestType = requestType;
@@ -34,6 +35,7 @@ public class RiotRequestBuilder<T> {
 	}
 
 	public RiotRequestBuilder<T> setURI(String uri, Object... args) {
+		this.endpoint = uri;
 		Object[] encodedArgs = new String[args.length];
 		for (int i = 0; i < args.length; i++) {
 			try {
@@ -61,11 +63,12 @@ public class RiotRequestBuilder<T> {
 		case API:
 			URI apiURI = URI.create(API_HTTP_BASE.formatted(platform, this.uri));
 			return new RiotRequest<T>(
-					HttpRequest.newBuilder().GET().header(API_TOKEN_HEADER, riot.getKey()).uri(apiURI).build(), type);
+					HttpRequest.newBuilder().GET().header(API_TOKEN_HEADER, riot.getKey()).uri(apiURI).build(), type,
+					endpoint);
 		case DDRAGON:
 		default:
 			URI ddragonURI = URI.create(DDRAGON_HTTP_BASE.formatted(this.uri));
-			return new RiotRequest<T>(HttpRequest.newBuilder().GET().uri(ddragonURI).build(), type);
+			return new RiotRequest<T>(HttpRequest.newBuilder().GET().uri(ddragonURI).build(), type, endpoint);
 		}
 	}
 

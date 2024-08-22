@@ -47,7 +47,7 @@ public class DDragonService extends RiotService {
 	}
 
 	public CompletableFuture<InputStream> getChampionIcon(Champions champion) {
-		String fullname = cachedDDragon.getChampion(champion).getImage().getFull();
+		String fullname = getCachedDDragon().getChampion(champion).getImage().getFull();
 		TypeReference<InputStream> type = new TypeReference<InputStream>() {};
 		RiotRequest<InputStream> request = this.createDDragonRequest(type, IMG_URI, getCachedDDragon().getVersion(),
 				"champion", fullname);
