@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import irelia.core.Irelia;
 import irelia.core.request.RiotRequest;
 import irelia.data.league.LeagueEntry;
+import irelia.data.league.QueueType;
 
 public class LeagueService extends RiotService {
 
@@ -17,10 +18,31 @@ public class LeagueService extends RiotService {
 
 	private final static String BY_SUMMONER_URI = "lol/league/v4/entries/by-summoner/%s";
 
-	public CompletableFuture<Set<LeagueEntry>> bySummoner(String summonerId) {
+	public CompletableFuture<Set<LeagueEntry>> set(String summonerId) {
 		TypeReference<Set<LeagueEntry>> type = new TypeReference<Set<LeagueEntry>>() {};
 		RiotRequest<Set<LeagueEntry>> request = this.createAPIRequest(type, irelia.getPlatform(), BY_SUMMONER_URI, summonerId);
 		return getAsync(request);
+	}
+
+	private CompletableFuture<LeagueEntry> entry(String ssummonerId, QueueType key){
+		CompletableFuture<LeagueEntry> result = new CompletableFuture<LeagueEntry>();
+		set(ssummonerId).handle((set, t) ->{
+			if(t != null){
+				result.completeExceptionally(t);
+				return null;
+			}
+			result.complete(set.stream().filter(x->x.getEnumQueueType().equals(key)).findFirst().orElse(null));	
+			return null;
+		});
+		return result;
+	}
+
+	public CompletableFuture<LeagueEntry> solo(String summonerId){
+		return entry(summonerId, QueueType.RANKED_SOLO_5x5);
+	}
+
+	public CompletableFuture<LeagueEntry> flex(String summonerId){
+		return entry(summonerId, QueueType.RANKED_FLEX_SR);
 	}
 
 }

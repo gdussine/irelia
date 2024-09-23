@@ -23,7 +23,7 @@ public class RiotAppRateLimiter extends RiotRequestManager {
 		if (rates != null) {
 			long timeToWait = rates.getTimeToWait();
 			if (timeToWait > 0) {
-				this.log.debug("App rate limite reach. Wait for %s ms".formatted(timeToWait));
+				this.log.warn("App rate limite reach. Wait for %s ms".formatted(timeToWait));
 				Thread.sleep(timeToWait);
 			}
 		}

@@ -17,7 +17,7 @@ public class Launcher {
 				InputStream in = Launcher.class.getClassLoader().getResourceAsStream("secrets.properties");
 				Properties prop = new Properties();
 				prop.load(in);
-				irelia = new Irelia(prop.getProperty("apikey"), Platform.EUW1);
+				irelia = new Irelia(prop.getProperty("apikey"), Platform.EUW1).start();
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(1);

@@ -22,7 +22,7 @@ public class RiotMethodRateLimiter extends RiotRequestManager {
 		if (rates != null) {
 			long timeToWait = rates.getTimeToWait();
 			if (timeToWait > 0) {
-				this.log.info("Method rate limite reach. Wait for %s ms".formatted(timeToWait));
+				this.log.warn("Method rate limite reach. Wait for %s ms".formatted(timeToWait));
 				Thread.sleep(timeToWait);
 			}
 		}

@@ -19,6 +19,7 @@ import irelia.core.service.SummonerService;
 public class Irelia {
 
 	private String key;
+	private boolean running = false;
 
 	private Region region;
 	private Platform platform;
@@ -51,17 +52,25 @@ public class Irelia {
 		league = new LeagueService(this);
 		spectator = new SpectatorService(this);
 		summoner = new SummonerService(this);
-
 	}
 
 	public Irelia start() {
+		if (running) {
+			this.log.warn("Irelia is already started");
+			return this;
+		}
 		this.requestSender.start();
 		this.appRateLimiter.start();
-		this.log.info("Started !");
+		this.log.info("Irelia started.");
+		running = true;
 		return this;
 	}
 
 	public void stop() {
+		if(!running){
+			this.log.warn("Irelia is not started");
+			return;
+		}
 		this.appRateLimiter.stop();
 		this.requestSender.stop();
 		this.account.stop();
@@ -69,7 +78,12 @@ public class Irelia {
 		this.league.stop();
 		this.spectator.stop();
 		this.summoner.stop();
-		this.log.info("Stopped !");
+		this.log.info("Irelia stopped.");
+		running = false;
+	}
+
+	public boolean isRunning(){
+		return running;
 	}
 
 	public String getKey() {

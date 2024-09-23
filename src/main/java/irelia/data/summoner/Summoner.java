@@ -48,4 +48,8 @@ public class Summoner {
 		this.summonerLevel = summonerLevel;
 	}
 
+	@Override
+	public String toString() {
+		return "Summoner:"+id;
+	}
 }

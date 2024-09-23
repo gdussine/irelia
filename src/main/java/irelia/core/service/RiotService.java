@@ -40,7 +40,6 @@ public class RiotService {
 	private synchronized RiotMethodRateLimiter getRateLimiter(String endpoint) {
 		RiotMethodRateLimiter result = rateLimiters.get(endpoint);
 		if (result == null) {
-			this.log.debug("New Rate Limiter created for method %s".formatted(endpoint));
 			result = new RiotMethodRateLimiter(irelia, endpoint);
 			result.start();
 			rateLimiters.put(endpoint, result);

@@ -28,6 +28,7 @@ public abstract class RiotRequestManager {
 		this.irelia = irelia;
 		this.runner = getRunner();
 		this.log = LoggerFactory.getLogger(this.getClass());
+		this.log.debug("%s created.".formatted(getName()));
 	}
 
 	public void start() {
@@ -46,6 +47,7 @@ public abstract class RiotRequestManager {
 	private synchronized Thread getRunner() {
 		return new Thread(() -> {
 			synchronized (this) {
+				this.log.debug("%s started.".formatted(this.getName()));
 				try {
 					while (true) {
 						if (queue.size() <= 0) {
@@ -55,7 +57,7 @@ public abstract class RiotRequestManager {
 						}
 					}
 				} catch (InterruptedException e) {
-					this.log.debug("%s stopped".formatted(this.getName()));
+					this.log.debug("%s stopped.".formatted(this.getName()));
 				}
 			}
 		});

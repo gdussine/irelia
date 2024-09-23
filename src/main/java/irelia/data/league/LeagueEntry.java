@@ -2,7 +2,8 @@ package irelia.data.league;
 
 public class LeagueEntry {
 	
-	private String leagueId, summonerId, queueType, tier, rank;
+	private String leagueId, summonerId, tier, rank;
+	private String queueType;
 	private int leaguePoints, wins, losses;
 	private boolean hotStreak, veteran, freshBlood, inactive;
 	private MiniSeries miniSeries;
@@ -21,6 +22,15 @@ public class LeagueEntry {
 	public String getQueueType() {
 		return queueType;
 	}
+
+	public QueueType getEnumQueueType(){
+		return QueueType.valueOf(queueType);
+	}
+
+	public void setEnumQueueType(){
+
+	}
+
 	public void setQueueType(String queueType) {
 		this.queueType = queueType;
 	}
@@ -83,6 +93,11 @@ public class LeagueEntry {
 	}
 	public void setMiniSeries(MiniSeries miniSeries) {
 		this.miniSeries = miniSeries;
+	}
+
+	@Override
+	public String toString() {
+		return queueType+":"+tier+"-"+rank+"-"+leaguePoints+"lp";
 	}
 	
 	

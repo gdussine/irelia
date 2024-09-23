@@ -1,14 +1,10 @@
 package irelia.tools;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 
-import irelia.core.Irelia;
-import irelia.core.Platform;
 import irelia.data.dragon.ChampionInfo;
 import irelia.data.dragon.DDragon;
 
