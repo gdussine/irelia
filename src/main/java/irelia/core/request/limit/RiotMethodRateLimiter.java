@@ -11,9 +11,11 @@ public class RiotMethodRateLimiter extends RiotRequestManager {
 
 	private RiotRequestRates rates;
 	private String endpoint;
+	private RiotRequestManager next;
 
 	public RiotMethodRateLimiter(Irelia irelia, String endpoint) {
-		super(irelia, irelia.getAppRateLimiter());
+		super(irelia);
+		this.next = irelia.getAppRateLimiter();
 		this.endpoint = endpoint;
 	}
 

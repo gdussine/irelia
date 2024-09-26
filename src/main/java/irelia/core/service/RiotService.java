@@ -89,15 +89,14 @@ public class RiotService {
 	protected <T> CompletableFuture<T> getAsync(RiotRequest<T> request) {
 		CompletableFuture<T> result = new CompletableFuture<>();
 		CompletableFuture<InputStream> futureInput = this.getInputStreamAsync(request);
-		futureInput.exceptionally(e -> {
-			result.completeExceptionally(e);
-			return null;
-		}).thenAccept(in -> {
+		futureInput.handle((in, ex) -> {
+			if(ex != null)
+				return result.completeExceptionally(ex);
 			try {
 				T t = mapper.readValue(in, request.getType());
-				result.complete(t);
+				return result.complete(t);
 			} catch (Exception e) {
-				result.completeExceptionally(e);
+				return result.completeExceptionally(e);
 			}
 		});
 		return result;

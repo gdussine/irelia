@@ -8,13 +8,13 @@ public class RiotAppRateLimiter extends RiotRequestManager {
 
 	public static final String APP_RATE_LIMIT_HEADER = "x-app-rate-limit";
 	public static final String APP_RATE_COUNT_HEADER = "x-app-rate-limit-count";
-	public static final String METHOD_RATE_LIMIT_HEADER = "x-method-rate-limit";
-	public static final String METHOD_RATE_COUNT_HEADER = "x-method-rate-limit-count";
 
 	private RiotRequestRates rates;
+	private RiotRequestSender next;
 
 	public RiotAppRateLimiter(Irelia irelia) {
-		super(irelia, irelia.getRequestSender());
+		super(irelia);
+		this.next = irelia.getRequestSender();
 
 	}
 

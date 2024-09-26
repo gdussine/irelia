@@ -9,9 +9,6 @@ import irelia.core.request.RiotRequest;
 
 public class RiotRequestSender extends RiotRequestManager {
 
-	public static final String METHOD_RATE_LIMIT_HEADER = "x-method-rate-limit";
-	public static final String METHOD_RATE_COUNT_HEADER = "x-method-rate-limit-count";
-
 	public RiotRequestSender(Irelia irelia) {
 		super(irelia);
 	}

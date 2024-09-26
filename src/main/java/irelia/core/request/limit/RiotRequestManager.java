@@ -17,12 +17,6 @@ public abstract class RiotRequestManager {
 	protected Irelia irelia;
 	protected List<RiotRequest<?>> queue = new ArrayList<>();
 	protected Logger log;
-	protected RiotRequestManager next;
-
-	public RiotRequestManager(Irelia irelia, RiotRequestManager next) {
-		this(irelia);
-		this.next = next;
-	}
 
 	public RiotRequestManager(Irelia irelia) {
 		this.irelia = irelia;
