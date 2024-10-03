@@ -1,4 +1,4 @@
-package irelia.core.request.limit;
+package irelia.request.limit;
 
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import irelia.core.Irelia;
-import irelia.core.request.RiotRequest;
+import irelia.request.core.RiotRequest;
 
 public abstract class RiotRequestManager {
 

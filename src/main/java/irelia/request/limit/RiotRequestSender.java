@@ -1,11 +1,11 @@
-package irelia.core.request.limit;
+package irelia.request.limit;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
 import irelia.core.Irelia;
-import irelia.core.request.RiotRequest;
+import irelia.request.core.RiotRequest;
 
 public class RiotRequestSender extends RiotRequestManager {
 

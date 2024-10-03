@@ -1,4 +1,4 @@
-package irelia.core.request;
+package irelia.request.limit;
 
 import java.net.http.HttpHeaders;
 import java.util.ArrayList;

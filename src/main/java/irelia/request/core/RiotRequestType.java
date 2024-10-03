@@ -1,4 +1,4 @@
-package irelia.core.request;
+package irelia.request.core;
 
 public enum RiotRequestType {
 	

@@ -1,8 +1,7 @@
-package irelia.core.request.limit;
+package irelia.request.limit;
 
 import irelia.core.Irelia;
-import irelia.core.request.RiotRequest;
-import irelia.core.request.RiotRequestRates;
+import irelia.request.core.RiotRequest;
 
 public class RiotMethodRateLimiter extends RiotRequestManager {
 

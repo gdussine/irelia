@@ -1,4 +1,4 @@
-package irelia.core.service;
+package irelia.service;
 
 import java.io.InputStream;
 import java.util.List;
@@ -7,12 +7,12 @@ import java.util.concurrent.CompletableFuture;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import irelia.core.Irelia;
-import irelia.core.request.RiotRequest;
 import irelia.data.dragon.ChampionInfo;
 import irelia.data.dragon.Champions;
 import irelia.data.dragon.DDragon;
 import irelia.data.dragon.DDragonObject;
 import irelia.data.dragon.IconInfo;
+import irelia.request.core.RiotRequest;
 
 public class DDragonService extends RiotService {
 

@@ -1,4 +1,4 @@
-package irelia.core.request;
+package irelia.data.status;
 
 public class StatusObject {
 

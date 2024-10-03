@@ -1,12 +1,12 @@
-package irelia.core.service;
+package irelia.service;
 
 import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import irelia.core.Irelia;
-import irelia.core.request.RiotRequest;
 import irelia.data.account.Account;
+import irelia.request.core.RiotRequest;
 
 public class AccountService extends RiotService {
 

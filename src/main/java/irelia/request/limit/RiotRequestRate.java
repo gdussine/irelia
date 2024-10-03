@@ -1,4 +1,4 @@
-package irelia.core.request;
+package irelia.request.limit;
 
 import java.util.Objects;
 import java.util.regex.Matcher;

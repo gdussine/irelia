@@ -1,4 +1,4 @@
-package irelia.core.service;
+package irelia.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -16,12 +16,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import irelia.core.Irelia;
 import irelia.core.Platform;
 import irelia.core.Region;
-import irelia.core.request.RiotRequest;
-import irelia.core.request.RiotRequestBuilder;
-import irelia.core.request.RiotRequestException;
-import irelia.core.request.RiotRequestType;
-import irelia.core.request.StatusObject;
-import irelia.core.request.limit.RiotMethodRateLimiter;
+import irelia.data.status.StatusObject;
+import irelia.request.core.RiotRequest;
+import irelia.request.core.RiotRequestBuilder;
+import irelia.request.core.RiotRequestException;
+import irelia.request.core.RiotRequestType;
+import irelia.request.limit.RiotMethodRateLimiter;
 
 public class RiotService {
 

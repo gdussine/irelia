@@ -1,7 +1,5 @@
 package irelia.tools;
 
-import java.util.Set;
-
 import irelia.core.Irelia;
 import irelia.data.account.Account;
 import irelia.data.league.LeagueEntry;

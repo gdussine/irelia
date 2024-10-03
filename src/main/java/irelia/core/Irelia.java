@@ -8,13 +8,13 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import irelia.core.request.limit.RiotAppRateLimiter;
-import irelia.core.request.limit.RiotRequestSender;
-import irelia.core.service.AccountService;
-import irelia.core.service.DDragonService;
-import irelia.core.service.LeagueService;
-import irelia.core.service.SpectatorService;
-import irelia.core.service.SummonerService;
+import irelia.request.limit.RiotAppRateLimiter;
+import irelia.request.limit.RiotRequestSender;
+import irelia.service.AccountService;
+import irelia.service.DDragonService;
+import irelia.service.LeagueService;
+import irelia.service.SpectatorService;
+import irelia.service.SummonerService;
 
 public class Irelia {
 

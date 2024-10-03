@@ -1,4 +1,6 @@
-package irelia.core.request;
+package irelia.request.core;
+
+import irelia.data.status.Status;
 
 public class RiotRequestException extends Exception{
 
