@@ -15,6 +15,7 @@ public class AccountService extends RiotService {
 	}
 
 	private final static String BY_RIOT_ID_URI = "riot/account/v1/accounts/by-riot-id/%s/%s";
+	
 
 	public CompletableFuture<Account> byRiotId(String gameName, String tagLine) {
 		TypeReference<Account> type = new TypeReference<Account>() {};
