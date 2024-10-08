@@ -12,7 +12,7 @@ public class LauncherTest {
 
     @Test
     public void getIrelia() {
-        Irelia irelia = Launcher.getIrelia();
+        Irelia irelia = Launcher.startIrelia();
         assertNotNull(irelia);
         assertTrue(irelia.isRunning());
     }

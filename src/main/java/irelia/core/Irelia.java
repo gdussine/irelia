@@ -13,6 +13,7 @@ import irelia.request.limit.RiotRequestSender;
 import irelia.service.AccountService;
 import irelia.service.DDragonService;
 import irelia.service.LeagueService;
+import irelia.service.MatchServices;
 import irelia.service.SpectatorService;
 import irelia.service.SummonerService;
 
@@ -31,11 +32,13 @@ public class Irelia {
 	private LeagueService league;
 	private SpectatorService spectator;
 	private SummonerService summoner;
+	private MatchServices match;
 
 	private RiotAppRateLimiter appRateLimiter;
 	private RiotRequestSender requestSender;
 
 	private Logger log;
+	
 
 	public Irelia(String key, Platform platform) {
 		super();
@@ -52,6 +55,7 @@ public class Irelia {
 		league = new LeagueService(this);
 		spectator = new SpectatorService(this);
 		summoner = new SummonerService(this);
+		match = new MatchServices(this);
 	}
 
 	public Irelia start() {
@@ -61,7 +65,7 @@ public class Irelia {
 		}
 		this.requestSender.start();
 		this.appRateLimiter.start();
-		this.log.info("Irelia started.");
+		this.log.debug("Irelia started.");
 		running = true;
 		return this;
 	}
@@ -78,7 +82,8 @@ public class Irelia {
 		this.league.stop();
 		this.spectator.stop();
 		this.summoner.stop();
-		this.log.info("Irelia stopped.");
+		this.match.stop();
+		this.log.debug("Irelia stopped.");
 		running = false;
 	}
 
@@ -132,6 +137,10 @@ public class Irelia {
 
 	public SummonerService summoner() {
 		return summoner;
+	}
+
+	public MatchServices match(){
+		return match;
 	}
 
 }

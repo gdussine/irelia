@@ -11,7 +11,7 @@ public class LaunchableTool {
 	protected ObjectMapper mapper;
 
 	public LaunchableTool() {
-		this.api = Launcher.getIrelia();
+		this.api = Launcher.startIrelia();
 		this.mapper = new ObjectMapper();
 	}
 

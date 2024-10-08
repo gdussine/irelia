@@ -15,7 +15,7 @@ public class IreliaUseCaseTest {
 
 	@Test
 	public void getAccount(){
-		this.irelia = Launcher.getIrelia().start();
+		this.irelia = Launcher.startIrelia().start();
 
 		assertNotNull(irelia);
 		Account acc =this.irelia.account().byRiotId("Guillaume", "TOP").join();

@@ -28,7 +28,7 @@ public class RiotService {
 	protected Irelia irelia;
 	protected ObjectMapper mapper;
 	private Map<String, RiotMethodRateLimiter> rateLimiters;
-	private Logger log;
+	protected Logger log;
 
 	public RiotService(Irelia irelia) {
 		this.irelia = irelia;
@@ -72,8 +72,7 @@ public class RiotService {
 	protected synchronized CompletableFuture<InputStream> getInputStreamAsync(RiotRequest<?> request) {
 		CompletableFuture<InputStream> result = new CompletableFuture<InputStream>();
 		this.getRateLimiter(request.getEndpoint()).submit(request).thenAcceptAsync(respons -> {
-			log.debug("%s send in %s ms".formatted(request.getRequest().uri(),
-					System.currentTimeMillis() - request.getStartTime()));
+			this.log.debug("Respons received in %s ms".formatted(System.currentTimeMillis() - request.getStartTime()));
 			try {
 				if (respons.statusCode() / 100 != 2)
 					throw new RiotRequestException(request,
@@ -87,10 +86,11 @@ public class RiotService {
 	}
 
 	protected <T> CompletableFuture<T> getAsync(RiotRequest<T> request) {
+		this.logRequest(request);
 		CompletableFuture<T> result = new CompletableFuture<>();
 		CompletableFuture<InputStream> futureInput = this.getInputStreamAsync(request);
 		futureInput.handle((in, ex) -> {
-			if(ex != null)
+			if (ex != null)
 				return result.completeExceptionally(ex);
 			try {
 				T t = mapper.readValue(in, request.getType());
@@ -100,6 +100,11 @@ public class RiotService {
 			}
 		});
 		return result;
+	}
+
+	protected <T> void logRequest(RiotRequest<T> request) {
+		this.log.debug("Request \"%s\" send, expect %s as result.".formatted(
+				request.getRequest().uri(), request.getType().getType().getTypeName()));
 	}
 
 }

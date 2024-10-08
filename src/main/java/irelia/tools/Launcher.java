@@ -11,7 +11,7 @@ public class Launcher {
 
 	protected static Irelia irelia;
 
-	public static Irelia getIrelia() {
+	public static Irelia startIrelia() {
 		if(irelia == null){
 			try {
 				InputStream in = Launcher.class.getClassLoader().getResourceAsStream("secrets.properties");
@@ -24,6 +24,10 @@ public class Launcher {
 			}
 		}
 		return irelia;
+	}
+
+	public static void stopIrelia(){
+		irelia.stop();
 	}
 	
 	public static void main(String[] args) throws Exception {
