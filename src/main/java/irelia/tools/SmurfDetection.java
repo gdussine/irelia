@@ -19,11 +19,7 @@ public class SmurfDetection {
         this.irelia = irelia;
     }
 
-    public void matchAnalyze(Account account, int depth){
-        
-    }
-
-    public void detect(Account account, ){
+    public void detect(Account account){
         System.out.println("Smurf detection");
         Summoner summoner = irelia.summoner().byPuuid(account.getPuuid()).join();
         System.out.println("Level detection : %d%%".formatted(Math.max(130-summoner.getSummonerLevel(),0)));
