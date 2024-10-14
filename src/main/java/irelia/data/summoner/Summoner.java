@@ -9,8 +9,6 @@ public class Summoner {
 	private String puuid;
 	private long summonerLevel;
 	
-	
-	
 	public String getAccountId() {
 		return accountId;
 	}

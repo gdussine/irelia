@@ -8,6 +8,7 @@ src/test/resources
 src/main/resources
 
 bin
+out
 gradle
 
 /gradlew

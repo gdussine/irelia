@@ -2,6 +2,8 @@ package irelia.data.match;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import irelia.data.account.Account;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Participant {
     private int allInPings; // Yellow crossed swords.
@@ -1293,6 +1295,14 @@ public class Participant {
 
     public void setDangerPings(int dangerPings) {
         this.dangerPings = dangerPings;
+    }
+
+    public Account getAccount(){
+        Account account = new Account();
+        account.setGameName(riotIdGameName);
+        account.setTagLine(riotIdTagline);
+        account.setPuuid(puuid);
+        return account;
     }
 
 }
