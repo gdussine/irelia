@@ -31,7 +31,8 @@ public class Launcher {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		new Tracker().launch();
+		LaunchableTool tool = new ChampionsEnumBuilder();
+		tool.launch();
 	}
 
 }
