@@ -32,7 +32,7 @@ publishing {
 }
 
 run{
-    standardInput = System.in
+    //standardInput = System.in
 }
 
 test {
