@@ -4,8 +4,8 @@
 # Ignore Gradle build output directory
 build
 
-src/test/resources
-src/main/resources
+src/test/resources/*.properties
+src/main/resources/*.properties
 
 bin
 out

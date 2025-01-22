@@ -1,7 +1,14 @@
-package irelia.data.dragon;
-import java.util.Map;
+package irelia.data.ddragon;
+
 import java.util.HashMap;
-public enum Champions{
+import java.util.Map;
+
+import irelia.core.Irelia;
+
+
+public enum Champions {
+    
+
 	Aatrox(266,"Aatrox"),
 	Ahri(103,"Ahri"),
 	Akali(84,"Akali"),
@@ -70,7 +77,7 @@ public enum Champions{
 	Kindred(203,"Kindred"),
 	Kled(240,"Kled"),
 	KogMaw(96,"Kog'Maw"),
-	KSante(897,"K'Santé"),
+	KSante(897,"K'Sante"),
 	Leblanc(7,"LeBlanc"),
 	LeeSin(64,"Lee Sin"),
 	Leona(89,"Leona"),
@@ -82,7 +89,7 @@ public enum Champions{
 	Malphite(54,"Malphite"),
 	Malzahar(90,"Malzahar"),
 	Maokai(57,"Maokai"),
-	MasterYi(11,"Maître Yi"),
+	MasterYi(11,"Master Yi"),
 	Milio(902,"Milio"),
 	MissFortune(21,"Miss Fortune"),
 	MonkeyKing(62,"Wukong"),
@@ -96,7 +103,7 @@ public enum Champions{
 	Nidalee(76,"Nidalee"),
 	Nilah(895,"Nilah"),
 	Nocturne(56,"Nocturne"),
-	Nunu(20,"Nunu et Willump"),
+	Nunu(20,"Nunu & Willump"),
 	Olaf(2,"Olaf"),
 	Orianna(61,"Orianna"),
 	Ornn(516,"Ornn"),
@@ -118,7 +125,7 @@ public enum Champions{
 	Samira(360,"Samira"),
 	Sejuani(113,"Sejuani"),
 	Senna(235,"Senna"),
-	Seraphine(147,"Séraphine"),
+	Seraphine(147,"Seraphine"),
 	Sett(875,"Sett"),
 	Shaco(35,"Shaco"),
 	Shen(98,"Shen"),
@@ -169,14 +176,38 @@ public enum Champions{
 	Zeri(221,"Zeri"),
 	Ziggs(115,"Ziggs"),
 	Zilean(26,"Zilean"),
-	Zoe(142,"Zoé"),
+	Zoe(142,"Zoe"),
 	Zyra(143,"Zyra");
+
 	private int key;private String label;
+
 	private static final Map<Integer, Champions> keyMap;
-	static {keyMap = new HashMap<>();for (Champions c : values())keyMap.put(c.getKey(), c);}
-	private Champions(int key, String label) {this.key = key;this.label = label;}
-	public int getKey() {return key;}
-	public String getLabel() {return label;}
-	public static Champions getByKey(int key) {return keyMap.get(key);}
+
+	static {
+        keyMap = new HashMap<>();
+        for (Champions c : values())
+            keyMap.put(c.getKey(), c);
+    }
+
+	private Champions(int key, String label) {
+        this.key = key;
+        this.label = label;
+    }
+	
+    public int getKey() {
+        return key;
+    }
+
+	public String getLabel() {
+        return label;
+    }
+
+	public static Champions getByKey(int key) {
+        return keyMap.get(key);
+    }
+
+	public ChampionInfo info(Irelia irelia) {
+		return irelia.ddragon().getDDragon().join().getChampion(this);
+	}
 
 }

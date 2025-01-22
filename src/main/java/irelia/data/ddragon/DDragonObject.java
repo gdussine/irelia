@@ -1,4 +1,4 @@
-package irelia.data.dragon;
+package irelia.data.ddragon;
 
 import java.util.Map;
 

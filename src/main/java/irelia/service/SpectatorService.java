@@ -7,17 +7,19 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import irelia.core.Irelia;
 import irelia.data.spectator.CurrentGameInfo;
 import irelia.request.core.RiotRequest;
+import irelia.service.impl.RateLimitedRiotService;
 
-public class SpectatorService extends RiotService{
-	
+public class SpectatorService extends RateLimitedRiotService {
+
+	private final static String BY_PUUID_URI = "lol/spectator/v5/active-games/by-summoner/%s";
+
 	public SpectatorService(Irelia riot) {
 		super(riot);
 	}
 
-	private final static String BY_PUUID_URI = "lol/spectator/v5/active-games/by-summoner/%s";
-	
 	public CompletableFuture<CurrentGameInfo> byPuuid(String puuid) {
-		TypeReference<CurrentGameInfo> type = new TypeReference<CurrentGameInfo>() {};
+		TypeReference<CurrentGameInfo> type = new TypeReference<CurrentGameInfo>() {
+		};
 		RiotRequest<CurrentGameInfo> request = this.createAPIRequest(type, irelia.getPlatform(), BY_PUUID_URI, puuid);
 		return getAsync(request);
 	}

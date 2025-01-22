@@ -7,10 +7,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import irelia.core.Irelia;
 import irelia.data.league.LeagueEntry;
-import irelia.data.league.QueueType;
+import irelia.data.league.LeagueQueueType;
 import irelia.request.core.RiotRequest;
+import irelia.service.impl.RateLimitedRiotService;
 
-public class LeagueService extends RiotService {
+public class LeagueService extends RateLimitedRiotService {
 
 	public LeagueService(Irelia riot) {
 		super(riot);
@@ -24,22 +25,22 @@ public class LeagueService extends RiotService {
 		return getAsync(request);
 	}
 
-	private CompletableFuture<LeagueEntry> league(String ssummonerId, QueueType key){
+	private CompletableFuture<LeagueEntry> league(String ssummonerId, LeagueQueueType key){
 		CompletableFuture<LeagueEntry> result = new CompletableFuture<LeagueEntry>();
 		leagues(ssummonerId).handle((set, t) ->{
 			if(t != null)
 				return result.completeExceptionally(t);
-			return result.complete(set.stream().filter(x->x.getEnumQueueType().equals(key)).findFirst().orElse(null));	
+			return result.complete(set.stream().filter(x->x.getQueueType().equals(key)).findFirst().orElse(null));	
 		});
 		return result;
 	}
 
 	public CompletableFuture<LeagueEntry> solo(String summonerId){
-		return league(summonerId, QueueType.RANKED_SOLO_5x5);
+		return league(summonerId, LeagueQueueType.RANKED_SOLO_5x5);
 	}
 
 	public CompletableFuture<LeagueEntry> flex(String summonerId){
-		return league(summonerId, QueueType.RANKED_FLEX_SR);
+		return league(summonerId, LeagueQueueType.RANKED_FLEX_SR);
 	}
 
 }

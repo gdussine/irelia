@@ -14,12 +14,14 @@ public class RiotRequest<T> {
 	private CompletableFuture<T> result;
 	private CompletableFuture<HttpResponse<byte[]>> payload;
 	private String endpoint;
+	private RiotRequestType requestType;
 
-	public RiotRequest(HttpRequest request, TypeReference<T> type, String endpoint) {
+	public RiotRequest(HttpRequest request, RiotRequestType requestType, TypeReference<T> type, String endpoint) {
 		this.request = request;
 		this.startTime = System.currentTimeMillis();
 		this.endpoint = endpoint;
 		this.type = type;
+		this.requestType = requestType;
 		this.result = new CompletableFuture<>();
 		this.payload = new CompletableFuture<>();
 	}
@@ -46,6 +48,10 @@ public class RiotRequest<T> {
 
 	public CompletableFuture<HttpResponse<byte[]>> getPayload() {
 		return payload;
+	}
+
+	public RiotRequestType getRequestType() {
+		return requestType;
 	}
 
 	@Override

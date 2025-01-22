@@ -27,7 +27,11 @@ public class RiotMethodRateLimiter extends RiotRequestManager {
 				Thread.sleep(timeToWait);
 			}
 		}
-		next.submit(request).thenAccept(respons -> {
+		next.submit(request).handle((respons,t) -> {
+			if(respons == null){
+				this.log.error("Request Error: %s.".formatted(t.getClass().getSimpleName()));
+				return respons;
+			}
 			String limitHeader = respons.headers().firstValue(METHOD_RATE_LIMIT_HEADER).orElse(null);
 			String countHeader = respons.headers().firstValue(METHOD_RATE_COUNT_HEADER).orElse(null);
 			if (this.rates == null)
@@ -35,6 +39,7 @@ public class RiotMethodRateLimiter extends RiotRequestManager {
 			else {
 				rates.updateCounts(limitHeader, countHeader);
 			}
+			return respons;
 		});
 	}
 

@@ -2,6 +2,8 @@ package irelia.data.spectator;
 
 import java.util.List;
 
+import irelia.data.community.QueueTypes;
+
 public class CurrentGameInfo {
 	
 	private long gameId, gameStartTime, mapId, gameLength, gameQueueConfigId;
@@ -37,6 +39,11 @@ public class CurrentGameInfo {
 	public long getGameQueueConfigId() {
 		return gameQueueConfigId;
 	}
+
+	public QueueTypes getQueueType(){
+		return QueueTypes.from(gameQueueConfigId);
+	}
+
 	public void setGameQueueConfigId(long gameQueueConfigId) {
 		this.gameQueueConfigId = gameQueueConfigId;
 	}

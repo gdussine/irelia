@@ -1,14 +1,22 @@
-package irelia.data.status;
+package irelia.request.core;
 
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Status {
+public class RiotRequestStatus {
 	private String message;
 	
 	@JsonProperty("status_code")
 	private int code;
+
+	public RiotRequestStatus(String message, int code) {
+		this.message = message;
+		this.code = code;
+	}
+
+	public RiotRequestStatus() {
+	}
 
 	public String getMessage() {
 		return message;
@@ -39,7 +47,7 @@ public class Status {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Status other = (Status) obj;
+		RiotRequestStatus other = (RiotRequestStatus) obj;
 		return code == other.code;
 	}
 	

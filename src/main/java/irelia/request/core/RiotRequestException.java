@@ -1,7 +1,5 @@
 package irelia.request.core;
 
-import irelia.data.status.Status;
-
 public class RiotRequestException extends Exception{
 
 	/**
@@ -10,9 +8,9 @@ public class RiotRequestException extends Exception{
 	private static final long serialVersionUID = 1L;
 	
 	private RiotRequest<?> request;
-	private Status status;
+	private RiotRequestStatus status;
 
-	public RiotRequestException(RiotRequest<?> request, Status status) {
+	public RiotRequestException(RiotRequest<?> request, RiotRequestStatus status) {
 		super(status.getCode() + " " + status.getMessage());
 		this.request = request;
 		this.status = status;
@@ -22,7 +20,7 @@ public class RiotRequestException extends Exception{
 		return request;
 	}
 
-	public Status getStatus() {
+	public RiotRequestStatus getStatus() {
 		return status;
 	}
 

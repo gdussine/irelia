@@ -1,4 +1,4 @@
-package irelia.data.dragon;
+package irelia.data.ddragon;
 
 public class ImageInfo {
 	

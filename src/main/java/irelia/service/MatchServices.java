@@ -8,8 +8,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import irelia.core.Irelia;
 import irelia.data.match.Match;
 import irelia.request.core.RiotRequest;
+import irelia.service.impl.RateLimitedRiotService;
 
-public class MatchServices extends RiotService{
+public class MatchServices extends  RateLimitedRiotService{
 	
 	public MatchServices(Irelia riot) {
 		super(riot);

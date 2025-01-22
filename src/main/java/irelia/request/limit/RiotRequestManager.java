@@ -26,6 +26,7 @@ public abstract class RiotRequestManager {
 	}
 
 	public void start() {
+		runner.setName(getName());	
 		runner.start();
 	}
 

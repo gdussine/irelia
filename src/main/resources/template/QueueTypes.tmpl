@@ -1,0 +1,29 @@
+package irelia.data.community;
+
+public enum QueueTypes {
+
+%s
+
+    private long id;
+    private String name;
+
+    private QueueTypes(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+	public static QueueTypes from(long id){
+		for(QueueTypes value : values())
+			if(value.getId() == id) return value;
+		return values()[0];
+	}
+}
+

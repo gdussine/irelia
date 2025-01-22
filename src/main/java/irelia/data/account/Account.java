@@ -22,6 +22,12 @@ public class Account {
 		return gameName + "#" + tagLine ;
 	}
 
+	public void setRiotId(String riotId){
+		String[] tab = riotId.split("#");
+		this.gameName = tab[0];
+		this.tagLine = tab[1];
+	}
+
 	public void setGameName(String gameName) {
 		this.gameName = gameName;
 	}

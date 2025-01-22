@@ -1,0 +1,44 @@
+package irelia.data.ddragon;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import irelia.core.Irelia;
+
+
+public enum Champions {
+    
+%s
+
+	private int key;private String label;
+
+	private static final Map<Integer, Champions> keyMap;
+
+	static {
+        keyMap = new HashMap<>();
+        for (Champions c : values())
+            keyMap.put(c.getKey(), c);
+    }
+
+	private Champions(int key, String label) {
+        this.key = key;
+        this.label = label;
+    }
+	
+    public int getKey() {
+        return key;
+    }
+
+	public String getLabel() {
+        return label;
+    }
+
+	public static Champions getByKey(int key) {
+        return keyMap.get(key);
+    }
+
+	public ChampionInfo info(Irelia irelia) {
+		return irelia.ddragon().getDDragon().join().getChampion(this);
+	}
+
+}

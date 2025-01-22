@@ -5,7 +5,7 @@ public class LeagueEntry {
 	private String leagueId, summonerId;
 	private LeagueRank rank;
 	private LeagueTier tier;
-	private String queueType;
+	private LeagueQueueType queueType;
 	private int leaguePoints, wins, losses;
 	private boolean hotStreak, veteran, freshBlood, inactive;
 	private MiniSeries miniSeries;
@@ -26,19 +26,11 @@ public class LeagueEntry {
 		this.summonerId = summonerId;
 	}
 
-	public String getQueueType() {
+	public LeagueQueueType getQueueType() {
 		return queueType;
 	}
 
-	public QueueType getEnumQueueType() {
-		return QueueType.valueOf(queueType);
-	}
-
-	public void setEnumQueueType() {
-
-	}
-
-	public void setQueueType(String queueType) {
+	public void setQueueType(LeagueQueueType queueType) {
 		this.queueType = queueType;
 	}
 

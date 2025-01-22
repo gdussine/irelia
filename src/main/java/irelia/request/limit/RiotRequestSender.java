@@ -20,6 +20,7 @@ public class RiotRequestSender extends RiotRequestManager {
 			request.getPayload().complete(respons);
 		} catch (IOException e) {
 			request.getPayload().completeExceptionally(e);
+			
 		}
 
 	}
