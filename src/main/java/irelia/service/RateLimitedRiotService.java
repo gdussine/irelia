@@ -1,4 +1,4 @@
-package irelia.service.impl;
+package irelia.service;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package irelia.tools;
+package irelia.tools.lib;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,6 +43,7 @@ public class IreliaEnumBuilder {
         }
         sb.append(";");
         writer.append(template.formatted(sb.toString()));
+        in.close();
         writer.close();
     }
 

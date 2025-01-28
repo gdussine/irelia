@@ -20,7 +20,8 @@ dependencies{
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.16'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.16'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    runtimeOnly group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.16'
 }
 
 publishing {
@@ -32,7 +33,6 @@ publishing {
 }
 
 run{
-    //standardInput = System.in
 }
 
 test {

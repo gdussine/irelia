@@ -16,4 +16,8 @@ public enum Platform {
 		return region;
 	}
 
+	public String getMatchId(long gameId){
+		return "%s_%d".formatted(name(), gameId);
+	}
+
 }

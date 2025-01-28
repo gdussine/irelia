@@ -179,9 +179,11 @@ public enum Champions {
 	Zoe(142,"Zoe"),
 	Zyra(143,"Zyra");
 
-	private int key;private String label;
+	private long key;
+	
+	private String label;
 
-	private static final Map<Integer, Champions> keyMap;
+	private static final Map<Long, Champions> keyMap;
 
 	static {
         keyMap = new HashMap<>();
@@ -189,12 +191,12 @@ public enum Champions {
             keyMap.put(c.getKey(), c);
     }
 
-	private Champions(int key, String label) {
+	private Champions(long key, String label) {
         this.key = key;
         this.label = label;
     }
 	
-    public int getKey() {
+    public long getKey() {
         return key;
     }
 
@@ -202,7 +204,7 @@ public enum Champions {
         return label;
     }
 
-	public static Champions getByKey(int key) {
+	public static Champions getByKey(long key) {
         return keyMap.get(key);
     }
 

@@ -1,10 +1,9 @@
 package irelia.request.core;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpRequest;
-import java.net.http.HttpRequest.Builder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -38,11 +37,7 @@ public class RiotRequestBuilder<T> {
 		this.endpoint = uri;
 		Object[] encodedArgs = new String[args.length];
 		for (int i = 0; i < args.length; i++) {
-			try {
-				encodedArgs[i] = URLEncoder.encode(args[i].toString(), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
+			encodedArgs[i] = URLEncoder.encode(args[i].toString(), StandardCharsets.UTF_8).replace("+", "%20");
 		}
 		this.uri = uri.formatted(encodedArgs);
 		return this;
@@ -60,7 +55,7 @@ public class RiotRequestBuilder<T> {
 
 	public RiotRequest<T> build() {
 		URI urlString = URI.create(requestType.url(platform, this.uri));
-		HttpRequest.Builder request = HttpRequest.newBuilder().GET().uri(urlString).timeout(Duration.ofSeconds(3));
+		HttpRequest.Builder request = HttpRequest.newBuilder().GET().uri(urlString).timeout(Duration.ofSeconds(5));
 		if(requestType.equals(RiotRequestType.API))
 			request.header(API_TOKEN_HEADER, riot.getKey());
 		return new RiotRequest<T>(request.build(), requestType, type, endpoint);

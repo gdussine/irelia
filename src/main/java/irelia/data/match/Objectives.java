@@ -8,6 +8,7 @@ public class Objectives {
     private Objective inhibitor;
     private Objective riftHerald;
     private Objective tower;
+    private Objective atakhan;
     
     public Objective getBaron() {
         return baron;
@@ -50,6 +51,14 @@ public class Objectives {
     }
     public void setTower(Objective tower) {
         this.tower = tower;
+    }
+
+    public Objective getAtakhan() {
+        return atakhan;
+    }
+
+    public void setAtakhan(Objective atakhan) {
+        this.atakhan = atakhan;
     }
 
     

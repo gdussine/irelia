@@ -1,4 +1,4 @@
-package irelia.service;
+package irelia.service.impl;
 
 import java.io.InputStream;
 import java.util.List;
@@ -13,7 +13,7 @@ import irelia.data.ddragon.DDragon;
 import irelia.data.ddragon.DDragonObject;
 import irelia.data.ddragon.IconInfo;
 import irelia.request.core.RiotRequest;
-import irelia.service.impl.RiotService;
+import irelia.service.RiotService;
 
 public class DDragonService extends RiotService {
 

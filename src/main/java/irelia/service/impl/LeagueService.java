@@ -1,4 +1,4 @@
-package irelia.service;
+package irelia.service.impl;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -9,7 +9,7 @@ import irelia.core.Irelia;
 import irelia.data.league.LeagueEntry;
 import irelia.data.league.LeagueQueueType;
 import irelia.request.core.RiotRequest;
-import irelia.service.impl.RateLimitedRiotService;
+import irelia.service.RateLimitedRiotService;
 
 public class LeagueService extends RateLimitedRiotService {
 

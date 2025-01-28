@@ -1,4 +1,4 @@
-package irelia.service.impl;
+package irelia.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

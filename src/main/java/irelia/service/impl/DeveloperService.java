@@ -1,7 +1,7 @@
-package irelia.service;
+package irelia.service.impl;
 
 import irelia.core.Irelia;
-import irelia.service.impl.RiotService;
+import irelia.service.RiotService;
 
 public class DeveloperService extends RiotService {
 

@@ -1,4 +1,4 @@
-package irelia.service;
+package irelia.service.impl;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import irelia.core.Irelia;
 import irelia.data.summoner.Summoner;
 import irelia.request.core.RiotRequest;
-import irelia.service.impl.RateLimitedRiotService;
+import irelia.service.RateLimitedRiotService;
 
 public class SummonerService extends RateLimitedRiotService {
 

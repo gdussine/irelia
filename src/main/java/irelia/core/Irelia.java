@@ -10,18 +10,19 @@ import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import irelia.api.IreliaAPI;
 import irelia.request.limit.RiotAppRateLimiter;
 import irelia.request.limit.RiotRequestSender;
-import irelia.service.AccountService;
-import irelia.service.CommunityService;
-import irelia.service.DDragonService;
-import irelia.service.LeagueService;
-import irelia.service.MatchServices;
-import irelia.service.SpectatorService;
-import irelia.service.StatusService;
-import irelia.service.SummonerService;
+import irelia.service.impl.AccountService;
+import irelia.service.impl.CommunityService;
+import irelia.service.impl.DDragonService;
+import irelia.service.impl.LeagueService;
+import irelia.service.impl.MatchServices;
+import irelia.service.impl.SpectatorService;
+import irelia.service.impl.StatusService;
+import irelia.service.impl.SummonerService;
 
-public class Irelia {
+public class Irelia implements IreliaAPI {
 
 	private String key;
 	private boolean running = false;
