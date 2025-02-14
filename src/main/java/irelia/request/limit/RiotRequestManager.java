@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import irelia.core.Irelia;
+import irelia.core.IreliaLogger;
 import irelia.request.core.RiotRequest;
 
 public abstract class RiotRequestManager {
@@ -21,8 +21,7 @@ public abstract class RiotRequestManager {
 	public RiotRequestManager(Irelia irelia) {
 		this.irelia = irelia;
 		this.runner = getRunner();
-		this.log = LoggerFactory.getLogger(this.getClass());
-		this.log.debug("%s created.".formatted(getName()));
+		this.log = IreliaLogger.LIMITER.logger(getClass());
 	}
 
 	public void start() {

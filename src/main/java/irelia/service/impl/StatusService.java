@@ -4,18 +4,14 @@ import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import irelia.core.Irelia;
+import irelia.api.StatusAPI;
 import irelia.data.status.StatusPlatform;
 import irelia.request.core.RiotRequest;
 import irelia.service.RateLimitedRiotService;
 
-public class StatusService extends  RateLimitedRiotService {
+public class StatusService extends  RateLimitedRiotService implements StatusAPI{
 
     private final static String PLATFORM_URI = "lol/status/v4/platform-data";
-
-    public StatusService(Irelia irelia) {
-        super(irelia);
-    }
 
     public CompletableFuture<StatusPlatform> platformData() {
         TypeReference<StatusPlatform> type = new TypeReference<StatusPlatform>() {};

@@ -5,24 +5,26 @@ import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpClient.Version;
 import java.time.Duration;
 import java.util.Locale;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import irelia.api.IreliaAPI;
+import irelia.api.RiotAPI;
 import irelia.request.limit.RiotAppRateLimiter;
 import irelia.request.limit.RiotRequestSender;
+import irelia.service.RiotServices;
 import irelia.service.impl.AccountService;
+import irelia.service.impl.ChampionService;
 import irelia.service.impl.CommunityService;
 import irelia.service.impl.DDragonService;
 import irelia.service.impl.LeagueService;
+import irelia.service.impl.MasteryService;
 import irelia.service.impl.MatchServices;
 import irelia.service.impl.SpectatorService;
 import irelia.service.impl.StatusService;
 import irelia.service.impl.SummonerService;
 
-public class Irelia implements IreliaAPI {
+public class Irelia implements RiotAPI {
 
 	private String key;
 	private boolean running = false;
@@ -32,14 +34,7 @@ public class Irelia implements IreliaAPI {
 	private Locale locale;
 	private HttpClient http;
 
-	private AccountService account;
-	private DDragonService ddragon;
-	private LeagueService league;
-	private SpectatorService spectator;
-	private SummonerService summoner;
-	private MatchServices match;
-	private StatusService status;
-	private CommunityService community;
+	private RiotServices services;
 
 	private RiotAppRateLimiter appRateLimiter;
 	private RiotRequestSender requestSender;
@@ -54,54 +49,36 @@ public class Irelia implements IreliaAPI {
 		this.locale = locale;
 		this.requestSender = new RiotRequestSender(this);
 		this.appRateLimiter = new RiotAppRateLimiter(this);
-		this.log = LoggerFactory.getLogger(getClass());
-		http = HttpClient.newBuilder().version(Version.HTTP_2).followRedirects(Redirect.NORMAL).build();
-		account = new AccountService(this);
-		ddragon = new DDragonService(this);
-		league = new LeagueService(this);
-		spectator = new SpectatorService(this);
-		summoner = new SummonerService(this);
-		match = new MatchServices(this);
-		status = new StatusService(this);
-		community = new CommunityService(this);
+		this.log = IreliaLogger.CORE.logger(getClass());
+		this.http = HttpClient.newBuilder().version(Version.HTTP_2).followRedirects(Redirect.NORMAL).build();
+		this.services = new RiotServices(this);
 	}
 
-	public CompletableFuture<Irelia> start() {
+	public void start() throws IreliaException {
 		if (running) {
-			this.log.warn("Irelia is already started.");
-			return CompletableFuture.completedFuture(this);
+			this.log.warn("Irelia is already running.");
+			return;
 		}
 		this.requestSender.start();
 		this.appRateLimiter.start();
-		return this.status.platformData().handle((data, t) -> {
-			if (t != null)
-				this.log.error("Irelia can't start.", t);
-			else
-				this.log.info("Irelia started for %s.".formatted(this.getPlatform().name()));
-			return data;
-		}).thenCompose(data -> {
-			return this.ddragon.getDDragon();
-		}).thenApply(x -> {
+		this.services.start();
+		try {
+			this.status().platformData().join();
 			this.running = true;
-			return this;
-		});
+			this.log.info("Irelia started.");
+		} catch (CompletionException e) {
+			throw IreliaException.failedStart(e);
+		}
 	}
 
-	public void stop() {
+	public void stop() throws IreliaException {
 		if (!running) {
-			this.log.warn("Irelia is not started.");
+			this.log.warn("Irelia is not running.");
 			return;
 		}
 		this.appRateLimiter.stop();
 		this.requestSender.stop();
-		this.account.stop();
-		this.ddragon.stop();
-		this.league.stop();
-		this.spectator.stop();
-		this.summoner.stop();
-		this.match.stop();
-		this.status.stop();
-		this.community.stop();
+		this.services.stop();
 		this.http.shutdown();
 		try {
 			this.http.awaitTermination(Duration.ofSeconds(5));
@@ -110,19 +87,6 @@ public class Irelia implements IreliaAPI {
 		}
 		this.log.info("Irelia stopped.");
 		running = false;
-	}
-
-	public CompletableFuture<Irelia> changeLocale(Locale locale){
-		if(locale.getCountry() == null){
-			this.log.warn("Irelia only accept Country");
-			return CompletableFuture.completedFuture(this);
-		}
-		this.locale = locale;
-		this.ddragon.clearCahche();
-		return this.ddragon.getDDragon().thenApply(d ->{
-			return this;
-		});
-
 	}
 
 	public boolean isRunning() {
@@ -161,36 +125,49 @@ public class Irelia implements IreliaAPI {
 		return requestSender;
 	}
 
+	@Override
 	public AccountService account() {
-		return account;
+		return services.account();
 	}
 
 	public DDragonService ddragon() {
-		return ddragon;
+		return services.ddragon();
 	}
 
 	public LeagueService league() {
-		return league;
+		return services.league();
 	}
 
+	@Override
 	public SpectatorService spectator() {
-		return spectator;
+		return services.spectator();
 	}
 
+	@Override
 	public SummonerService summoner() {
-		return summoner;
+		return services.summoner();
 	}
 
 	public MatchServices match() {
-		return match;
+		return services.match();
 	}
 
+	@Override
 	public StatusService status() {
-		return status;
+		return services.status();
 	}
 
 	public CommunityService community() {
-		return community;
+		return services.community();
+	}
+
+	@Override
+	public ChampionService champion() {
+		return services.champion();
+	}
+
+	public MasteryService mastery(){
+		return mastery();
 	}
 
 }

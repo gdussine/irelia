@@ -25,10 +25,6 @@ public class DDragonService extends RiotService {
 
 	private DDragon cachedDDragon;
 
-	public DDragonService(Irelia riot) {
-		super(riot);
-	}
-
 	private DDragon getCachedDDragon() {
 		if (cachedDDragon == null)
 			cachedDDragon = getDDragon().join();
@@ -37,6 +33,12 @@ public class DDragonService extends RiotService {
 
 	private void setCachedDDragon(DDragon cachedDDragon) {
 		this.cachedDDragon = cachedDDragon;
+	}
+
+	@Override
+	public void start() {
+		DDragon dragon = this.getDDragon().join();
+		this.log.debug("{} started in version {}.", getClass().getSimpleName(), dragon.getVersion());
 	}
 
 	public void clearCahche(){
@@ -67,13 +69,9 @@ public class DDragonService extends RiotService {
 			futureDDragon.complete(cachedDDragon);
 			return futureDDragon;
 		}
-		TypeReference<List<String>> typeList = new TypeReference<List<String>>() {
-		};
-		TypeReference<DDragonObject<ChampionInfo>> typeChampion = new TypeReference<DDragonObject<ChampionInfo>>() {
-		};
-		TypeReference<DDragonObject<IconInfo>> typeIcon = new TypeReference<DDragonObject<IconInfo>>() {
-		};
-
+		TypeReference<List<String>> typeList = new TypeReference<List<String>>() {};
+		TypeReference<DDragonObject<ChampionInfo>> typeChampion = new TypeReference<DDragonObject<ChampionInfo>>() {};
+		TypeReference<DDragonObject<IconInfo>> typeIcon = new TypeReference<DDragonObject<IconInfo>>() {};
 		RiotRequest<List<String>> requestLanguage = this.createDDragonRequest(typeList, LANGUAGES_URI);
 		RiotRequest<List<String>> requestVersion = this.createDDragonRequest(typeList, VERSION_URI);
 		return getAsync(requestLanguage).thenApplyAsync(list -> {
@@ -105,7 +103,6 @@ public class DDragonService extends RiotService {
 			});
 		}).thenApply(dragon -> {
 			this.setCachedDDragon(dragon);
-			this.log.info("DDragon %s loaded in %s.".formatted(dragon.getVersion(), dragon.getLang()));
 			return dragon;
 		});
 	}

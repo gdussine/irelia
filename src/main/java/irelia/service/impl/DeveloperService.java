@@ -5,9 +5,5 @@ import irelia.service.RiotService;
 
 public class DeveloperService extends RiotService {
 
-    public DeveloperService(Irelia riot) {
-        super(riot);
-    }
-
     
 }
