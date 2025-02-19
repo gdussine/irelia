@@ -1,8 +1,12 @@
 package irelia.tools;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.function.Consumer;
@@ -10,11 +14,7 @@ import java.util.function.Consumer;
 import irelia.core.Irelia;
 import irelia.core.IreliaException;
 import irelia.core.Platform;
-import irelia.data.account.Account;
-import irelia.data.community.QueueTypes;
-import irelia.data.match.Match;
-import irelia.data.match.MatchQuery;
-import irelia.data.match.Participant;
+import irelia.data.ddragon.Champions;
 import irelia.tools.lib.SampleAccountProvider;
 import irelia.tools.lib.SampleAccountProvider.SampleRiotId;
 
@@ -48,7 +48,7 @@ public class Launcher {
 		System.out.println(provider.getList(accountIds));
 	}
 
-	public static void launch(Consumer<Irelia> consumer){
+	public static void launch(Consumer<Irelia> consumer) {
 		Irelia irelia = new Irelia(getKeyFromProperties(), Platform.EUW1, Locale.ENGLISH);
 		try {
 			irelia.start();
@@ -60,18 +60,17 @@ public class Launcher {
 	}
 
 	public static void main(String[] args) throws Exception {
-		launch(irelia ->{
-			MatchQuery query = new MatchQuery().setQueue(QueueTypes.QUEUE_RANKED_FLEX_440).setStart(1).setCount(15);
-			Account account = irelia.account().byRiotId("Guillaume#TOP").join();
-			List<String> matchIds = irelia.match().byPuuid(account.getPuuid(), query).join();
-			for(String matchId : matchIds){
-				Match match = irelia.match().byId(matchId).join();
-				Participant participant = match.getInfo().getParticipants().stream().filter(x->x.getPuuid().equals(account.getPuuid())).findAny().orElse(null);
-				System.out.println("------> " + matchId);
-				System.out.println(participant.getRiotIdGameName());
-				System.out.println(participant.getChampionName());
-				System.out.println("%d/%d/%d".formatted(participant.getKills(), participant.getAssists(), participant.getDeaths()));
-			} 
+		launch(irelia -> {
+			try {
+				File targetFile = new File("output/img.png");
+				OutputStream outStream = new FileOutputStream(targetFile);
+				InputStream in = irelia.ddragon().getChampionSplash(Champions.MonkeyKing, 6).join();
+				outStream.write(in.readAllBytes());
+				outStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		});
 	}
 

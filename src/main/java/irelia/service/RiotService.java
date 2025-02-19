@@ -69,7 +69,7 @@ public class RiotService {
 			try {
 				if (t != null)
 					throw new Exception(t);
-				if (respons.statusCode() / 100 != 2 && request.getRequestType().isOfficial()) {
+				if (respons.statusCode() / 100 != 2 && request.getRequestType().isRiotAPI()) {
 					throw new RiotRequestException(request,
 							mapper.readValue(respons.body(), RiotRequestStatusObject.class).getStatus());
 				} else if (respons.statusCode() / 100 != 2)
