@@ -5,12 +5,12 @@ import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import irelia.core.Irelia;
+import irelia.core.IreliaLogger;
 import irelia.request.core.RiotRequest;
 import irelia.request.core.RiotRequestBuilder;
 import irelia.request.core.RiotRequestException;
@@ -25,14 +25,21 @@ public class RiotService {
 	protected ObjectMapper mapper;
 	protected Logger log;
 
-	public RiotService(Irelia irelia) {
-		this.irelia = irelia;
+	public RiotService() {
 		this.mapper = new ObjectMapper();
-		this.log = LoggerFactory.getLogger(this.getClass());
+		this.log = IreliaLogger.SERVICE.logger(getClass());
 	}
 
 	protected synchronized RiotRequestManager getRateLimiter(String endpoint) {
 		return this.irelia.getRequestSender();
+	}
+
+	public void setIrelia(Irelia irelia) {
+		this.irelia = irelia;
+	}
+
+	public void start() {
+		this.log.debug("{} started.", getClass().getSimpleName());
 	}
 
 	public void stop() {
@@ -58,19 +65,20 @@ public class RiotService {
 	protected synchronized CompletableFuture<InputStream> getInputStreamAsync(RiotRequest<?> request) {
 		CompletableFuture<InputStream> result = new CompletableFuture<InputStream>();
 		this.getRateLimiter(request.getEndpoint()).submit(request).handleAsync((respons, t) -> {
+			long time = (System.currentTimeMillis() - request.getStartTime());
 			try {
 				if (t != null)
 					throw new Exception(t);
-				this.log.debug(
-						"Respons received in %s ms".formatted(System.currentTimeMillis() - request.getStartTime()));
-				if (respons.statusCode() / 100 != 2 && request.getRequestType().isOfficial()) {
+				if (respons.statusCode() / 100 != 2 && request.getRequestType().isRiotAPI()) {
 					throw new RiotRequestException(request,
 							mapper.readValue(respons.body(), RiotRequestStatusObject.class).getStatus());
 				} else if (respons.statusCode() / 100 != 2)
 					throw new RiotRequestException(request,
 							new RiotRequestStatus("External API Provider Exception", respons.statusCode()));
+				this.log.trace("Request: {}, Respons: \"{} OK\" in {}ms.", request, respons.statusCode(), time);
 				result.complete(new ByteArrayInputStream(respons.body()));
 			} catch (Exception e) {
+				this.log.debug("Request: {},Respons {} in {}ms.",request, e.getMessage(), time);
 				result.completeExceptionally(e);
 			}
 			return respons;
@@ -79,27 +87,21 @@ public class RiotService {
 	}
 
 	protected <T> CompletableFuture<T> getAsync(RiotRequest<T> request) {
-		this.logRequest(request);
 		CompletableFuture<T> result = new CompletableFuture<>();
 		CompletableFuture<InputStream> futureInput = this.getInputStreamAsync(request);
 		futureInput.handle((in, ex) -> {
-			if (ex != null) {
+			if (in == null) {
 				return result.completeExceptionally(ex);
 			}
 			try {
 				T t = mapper.readValue(in, request.getType());
+				in.close();
 				return result.complete(t);
 			} catch (Exception e) {
 				return result.completeExceptionally(e);
 			}
 		});
-
 		return result;
-	}
-
-	protected <T> void logRequest(RiotRequest<T> request) {
-		this.log.debug("Request \"%s\" send, expect %s as result.".formatted(
-				request.getRequest().uri(), request.getType().getType().getTypeName()));
 	}
 
 }

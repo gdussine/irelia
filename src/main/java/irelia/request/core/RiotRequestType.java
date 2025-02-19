@@ -27,4 +27,10 @@ public enum RiotRequestType {
 		return true;
 	}
 
+	public boolean isRiotAPI(){
+		if(this.equals(API))
+			return true;
+		return false;
+	}
+
 }

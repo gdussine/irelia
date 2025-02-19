@@ -6,12 +6,12 @@ import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import irelia.core.Irelia;
 import irelia.data.ddragon.ChampionInfo;
 import irelia.data.ddragon.Champions;
 import irelia.data.ddragon.DDragon;
 import irelia.data.ddragon.DDragonObject;
 import irelia.data.ddragon.IconInfo;
+import irelia.data.ddragon.ItemInfo;
 import irelia.request.core.RiotRequest;
 import irelia.service.RiotService;
 
@@ -19,15 +19,14 @@ public class DDragonService extends RiotService {
 
 	private final static String CHAMPIONS_URI = "cdn/%s/data/%s/champion.json";
 	private final static String ICONS_URI = "cdn/%s/data/%s/profileicon.json";
-	private final static String IMG_URI = "cdn/%s/img/%s/%s";
+	private final static String ITEMS_URI = "cdn/%s/data/%s/item.json";
+	private final static String ICON_URI = "cdn/%s/img/profileicon/%s";
+	private final static String CHAMPION_ICON_URI = "cdn/%s/img/champion/%s";
+	private final static String CHAMPION_SPASH_URI = "cdn/img/champion/splash/%s_%s.jpg";
 	private final static String LANGUAGES_URI = "cdn/languages.json";
 	private final static String VERSION_URI = "api/versions.json";
 
 	private DDragon cachedDDragon;
-
-	public DDragonService(Irelia riot) {
-		super(riot);
-	}
 
 	private DDragon getCachedDDragon() {
 		if (cachedDDragon == null)
@@ -39,15 +38,21 @@ public class DDragonService extends RiotService {
 		this.cachedDDragon = cachedDDragon;
 	}
 
-	public void clearCahche(){
+	@Override
+	public void start() {
+		DDragon dragon = this.getDDragon().join();
+		this.log.debug("{} started in version {}.", getClass().getSimpleName(), dragon.getVersion());
+	}
+
+	public void clearCahche() {
 		cachedDDragon = null;
 	}
 
-	public CompletableFuture<InputStream> getProfileIcon(String fullname) {
+	public CompletableFuture<InputStream> getProfileIcon(Integer iconId) {
+		String fullname = getCachedDDragon().getIcon(iconId).getImage().getFull();
 		TypeReference<InputStream> type = new TypeReference<InputStream>() {
 		};
-		RiotRequest<InputStream> request = this.createDDragonRequest(type, IMG_URI, getCachedDDragon().getVersion(),
-				"profileicon",
+		RiotRequest<InputStream> request = this.createDDragonRequest(type, ICON_URI, getCachedDDragon().getVersion(),
 				fullname);
 		return getInputStreamAsync(request);
 	}
@@ -56,8 +61,16 @@ public class DDragonService extends RiotService {
 		String fullname = getCachedDDragon().getChampion(champion).getImage().getFull();
 		TypeReference<InputStream> type = new TypeReference<InputStream>() {
 		};
-		RiotRequest<InputStream> request = this.createDDragonRequest(type, IMG_URI, getCachedDDragon().getVersion(),
-				"champion", fullname);
+		RiotRequest<InputStream> request = this.createDDragonRequest(type, CHAMPION_ICON_URI,
+				getCachedDDragon().getVersion(), fullname);
+		return getInputStreamAsync(request);
+	}
+
+	public CompletableFuture<InputStream> getChampionSplash(Champions champion, int skinId) {
+		String fullname = getCachedDDragon().getChampion(champion).getId();
+		TypeReference<InputStream> type = new TypeReference<InputStream>() {
+		};
+		RiotRequest<InputStream> request = this.createDDragonRequest(type, CHAMPION_SPASH_URI, fullname, skinId);
 		return getInputStreamAsync(request);
 	}
 
@@ -73,7 +86,8 @@ public class DDragonService extends RiotService {
 		};
 		TypeReference<DDragonObject<IconInfo>> typeIcon = new TypeReference<DDragonObject<IconInfo>>() {
 		};
-
+		TypeReference<DDragonObject<ItemInfo>> typeItem = new TypeReference<DDragonObject<ItemInfo>>() {
+		};
 		RiotRequest<List<String>> requestLanguage = this.createDDragonRequest(typeList, LANGUAGES_URI);
 		RiotRequest<List<String>> requestVersion = this.createDDragonRequest(typeList, VERSION_URI);
 		return getAsync(requestLanguage).thenApplyAsync(list -> {
@@ -103,9 +117,14 @@ public class DDragonService extends RiotService {
 				dragon.setIcons(obj.getData());
 				return dragon;
 			});
+		}).thenComposeAsync(dragon -> {
+			RiotRequest<DDragonObject<ItemInfo>> request = this.createDDragonRequest(typeItem,ITEMS_URI,dragon.getVersion(), dragon.getLang());
+			return getAsync(request).thenApplyAsync(obj ->{
+				dragon.setItems(obj.getData());
+				return dragon;
+			});
 		}).thenApply(dragon -> {
 			this.setCachedDDragon(dragon);
-			this.log.info("DDragon %s loaded in %s.".formatted(dragon.getVersion(), dragon.getLang()));
 			return dragon;
 		});
 	}

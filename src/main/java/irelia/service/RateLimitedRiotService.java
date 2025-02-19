@@ -18,8 +18,7 @@ public class RateLimitedRiotService extends RiotService{
 
 	private Map<String, RiotMethodRateLimiter> rateLimiters;
 
-	public RateLimitedRiotService(Irelia irelia) {
-        super(irelia);
+	public RateLimitedRiotService() {
 		this.rateLimiters = new HashMap<>();
 	}
 

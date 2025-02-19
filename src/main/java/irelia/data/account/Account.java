@@ -24,11 +24,15 @@ public class Account {
 
 	public void setRiotId(String riotId){
 		String[] tab = riotId.split("#");
-		this.gameName = tab[0];
-		this.tagLine = tab[1];
+		if(tab.length != 2 )
+			throw new IllegalArgumentException("The Riot Id must include '#' to separate gameName and tagLine.");
+		this.setGameName(tab[0]);
+		this.setTagLine(tab[1]);
 	}
 
 	public void setGameName(String gameName) {
+		if(gameName.length() < 3 || gameName.length() > 16) 
+			throw new IllegalArgumentException("The gameName must be 3–16 alphanumeric characters long.");
 		this.gameName = gameName;
 	}
 
@@ -37,6 +41,8 @@ public class Account {
 	}
 
 	public void setTagLine(String tagLine) {
+		if(tagLine.length() < 3 || tagLine.length() > 5) 
+			throw new IllegalArgumentException("The tagLine must be 3–5 alphanumeric characters long.");
 		this.tagLine = tagLine;
 	}
 	

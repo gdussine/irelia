@@ -8,7 +8,7 @@ import irelia.data.account.Account;
 
 public class SampleAccountProvider {
 
-    enum SampleRiotId {
+    public enum SampleRiotId {
         MITSUKO("mitsuko#ema"),
         ADRY("Adry#metal"),
         GUILLAUME("Guillaume#TOP"),

@@ -14,9 +14,6 @@ public class CommunityService extends RiotService{
 
     private final static String QUEUE_JSON_URI = "plugins/rcp-be-lol-game-data/global/%s/v1/queues.json";
 
-    public CommunityService(Irelia irelia){
-        super(irelia);
-    }
 
 	public CompletableFuture<List<QueueInfo>> queue() {
 		TypeReference<List<QueueInfo>> type = new TypeReference<List<QueueInfo>>() {};
