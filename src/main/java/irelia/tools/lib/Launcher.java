@@ -8,8 +8,8 @@ import java.util.Properties;
 import irelia.core.Irelia;
 import irelia.core.Platform;
 import irelia.tools.lib.SampleAccountProvider.SampleRiotId;
-import irelia.tools.tracker.TrackableAccount;
-import irelia.tools.tracker.Tracker;
+import irelia.tools.trackervz.TrackableAccount;
+import irelia.tools.trackervz.Tracker;
 
 public class Launcher {
 

@@ -1,10 +1,10 @@
-package irelia.tools.tracker;
+package irelia.tools.trackervz;
 
 public interface Trackable {
 
     public String getPuuid();
 
-    public void  setGameId(long id);
+    public void setGameId(long id);
 
     public long getGameId();
 

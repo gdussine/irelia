@@ -1,4 +1,4 @@
-package irelia.tools.tracker;
+package irelia.tools.trackervz;
 
 import java.time.Duration;
 import java.util.function.Consumer;
@@ -12,12 +12,12 @@ import irelia.data.spectator.CurrentGameInfo;
 
 public class Tracker<T extends Trackable> {
 
-    private TrackableQueue<T> afkQueue, inGameQueue;
-    private Irelia irelia;
-    private Logger log;
-    private boolean running;
-    private Thread afkThread;
-    private Thread inGameThread;
+    protected TrackableQueue<T> afkQueue, inGameQueue;
+    protected Irelia irelia;
+    protected Logger log;
+    protected boolean running;
+    protected Thread afkThread;
+    protected Thread inGameThread;
 
     public Tracker(Irelia irelia, Duration afkPeriod, Duration inGamePeriod) {
         this.irelia = irelia;
@@ -32,9 +32,21 @@ public class Tracker<T extends Trackable> {
         inGameThread.start();
         afkThread.start();
     }
+    
+    public void stop() {
+    	inGameThread.interrupt();
+    	afkThread.interrupt();
+    	try {
+			afkThread.join();
+			inGameThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
 
     public void register(T t) {
-        this.afkQueue.add(t);
+    	if(!afkQueue.contains(t) && inGameQueue.contains(t))
+    		this.afkQueue.add(t);
     }
 
     private final void afkLoop() {
@@ -87,6 +99,7 @@ public class Tracker<T extends Trackable> {
             } catch (InterruptedException e) {
                 running = false;
                 log.debug("Thread %s stopped!".formatted(threadName));
+                onTrackerStop(e, threadName);
             } catch (Exception e) {
                 running = false;
                 log.error("Thread %s stopped!".formatted(threadName), e);
@@ -103,5 +116,13 @@ public class Tracker<T extends Trackable> {
     }
 
     public void onLeaveGame(T selected, Match match) {
+    }
+    
+    public void onRegister(T t) {
+    	
+    }
+    
+    public void onTrackerStop(InterruptedException e, String threadName) {
+    	
     }
 }

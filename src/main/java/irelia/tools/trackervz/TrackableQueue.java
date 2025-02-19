@@ -1,4 +1,4 @@
-package irelia.tools.tracker;
+package irelia.tools.trackervz;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -47,6 +47,10 @@ public class TrackableQueue<T extends Trackable> {
     public synchronized T next() {
         this.selector = selector >= queue.size() - 1 ? 0 : selector + 1;
         return getSelectedValue();
+    }
+    
+    public synchronized boolean contains(T t) {
+    	return queue.stream().anyMatch(x->x.equals(t));
     }
 
     @Override
