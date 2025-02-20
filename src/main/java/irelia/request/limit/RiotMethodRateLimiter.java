@@ -44,7 +44,7 @@ public class RiotMethodRateLimiter extends RiotRequestManager {
 	}
 
 	@Override
-	protected String getName() {
+	public String getName() {
 		return super.getName() + "[%s]".formatted(endpoint);
 	}
 

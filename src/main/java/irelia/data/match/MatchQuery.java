@@ -63,50 +63,21 @@ public class MatchQuery {
         return this;
     }
 
-    public Integer getCount() {
-        return count;
-    }
-
-    public Integer getStart() {
-        return start;
-    }
-
-    public Long getStartTime() {
-        return startTime;
-    }
-
-    public Long getEndTime() {
-        return endTime;
-    }
-
-    public Long getQueue() {
-        return queue;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public String getQueryString() {
-        ArrayList<String> params = new ArrayList<>();
-        for (Field field : getClass().getDeclaredFields()) {
-            if (Modifier.isStatic(field.getModifiers()))
+    public String getQueryString(){
+        StringBuilder sb = new StringBuilder();
+        Object[] attr = {count, start, startTime, endTime, queue, type};
+        String[] attrName = {"count", "start", "startTime", "endTime", "queue", "type"};
+        for(int i = 0; i<attr.length; i++){
+            if(attr[i] == null)
                 continue;
-            Object param = null;
-
-            try {
-                param = field.get(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (param == null)
-                continue;
-            params.add("%s=%s".formatted(field.getName(), param));
+            if(!sb.isEmpty())
+                sb.append("&");
+            sb.append(attrName[i]).append("=").append(attr[i]);
         }
-        if (params.size() == 0)
-            return "";
-        else
-            return "?" + String.join("&", params);
+        sb.insert(0, "?");
+        return sb.toString();
+
+
     }
 
 }

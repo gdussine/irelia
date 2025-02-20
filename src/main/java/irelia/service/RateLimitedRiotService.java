@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import irelia.core.Irelia;
+import irelia.core.IreliaException;
 import irelia.core.Platform;
 import irelia.core.Region;
 import irelia.request.core.RiotRequest;
@@ -32,9 +33,13 @@ public class RateLimitedRiotService extends RiotService{
 		return result;
 	}
 
-	public void stop() {
+	public void stop() throws IreliaException {
 		for (Entry<String, RiotMethodRateLimiter> s : rateLimiters.entrySet()) {
-			s.getValue().stop();
+			try {
+				s.getValue().stop();
+			} catch (IreliaException e) {
+				throw IreliaException.riotServiceFailedStop(this, e);
+			}
 		}
 	}
 

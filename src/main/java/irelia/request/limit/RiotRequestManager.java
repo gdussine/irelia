@@ -8,6 +8,7 @@ import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 
 import irelia.core.Irelia;
+import irelia.core.IreliaException;
 import irelia.core.IreliaLogger;
 import irelia.request.core.RiotRequest;
 
@@ -29,12 +30,12 @@ public abstract class RiotRequestManager {
 		runner.start();
 	}
 
-	public void stop() {
+	public void stop() throws IreliaException {
 		runner.interrupt();
 		try {
 			runner.join();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			throw IreliaException.riotRequestManagerFailedStop(this, e);
 		}
 	}
 
@@ -57,7 +58,7 @@ public abstract class RiotRequestManager {
 		});
 	}
 
-	protected String getName() {
+	public String getName() {
 		return this.getClass().getSimpleName();
 	}
 

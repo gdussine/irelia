@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import irelia.core.Irelia;
+import irelia.core.IreliaException;
 import irelia.core.IreliaLogger;
 import irelia.request.core.RiotRequest;
 import irelia.request.core.RiotRequestBuilder;
@@ -42,7 +43,11 @@ public class RiotService {
 		this.log.debug("{} started.", getClass().getSimpleName());
 	}
 
-	public void stop() {
+	public String getName(){
+		return this.getClass().getSimpleName();
+	}
+
+	public void stop() throws IreliaException {
 
 	}
 
