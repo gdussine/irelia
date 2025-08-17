@@ -19,7 +19,7 @@ import irelia.data.league.LeagueRank;
 import irelia.data.league.LeagueTier;
 import irelia.data.summoner.Summoner;
 
-@Tag("LeagueAPI")
+@Tag("APITest")
 public class LeagueAPITests extends IreliaTests {
 
     @ParameterizedTest
@@ -27,35 +27,37 @@ public class LeagueAPITests extends IreliaTests {
     public void rankedPlayer(String riotId) {
         Account account = irelia.account().byRiotId(riotId).join();
         Summoner summoner = irelia.summoner().byPuuid(account.getPuuid()).join();
-        Set<LeagueEntry> leagues = irelia.league().bySummoner(summoner.getId()).join();
+        Set<LeagueEntry> leagues = irelia.league().byPuuid(summoner.getPuuid()).join();
         for (LeagueEntry league : leagues) {
             assertNotNull(league.getRank());
             assertNotNull(league.getTier());
         }
     }
 
+    
     @Test
     public void apexLeagues() {
         LeagueList masterLeague = irelia.league().masterByQueue(LeagueQueueType.RANKED_SOLO_5x5).join();
         assertLeague(LeagueTier.MASTER, LeagueQueueType.RANKED_SOLO_5x5, masterLeague);
         LeagueList grandMasterLeague = irelia.league().grandmasterByQueue(LeagueQueueType.RANKED_SOLO_5x5).join();
-        assertLeague(LeagueTier.GRANDMASTER,LeagueQueueType.RANKED_SOLO_5x5, grandMasterLeague);
+        assertLeague(LeagueTier.GRANDMASTER, LeagueQueueType.RANKED_SOLO_5x5, grandMasterLeague);
         LeagueList challengerLeague = irelia.league().challengerByQueue(LeagueQueueType.RANKED_SOLO_5x5).join();
         assertLeague(LeagueTier.CHALLENGER, LeagueQueueType.RANKED_SOLO_5x5, challengerLeague);
         LeagueList masterLeague2 = irelia.league().byLeagueId(masterLeague.getLeagueId()).join();
         assertLeague(LeagueTier.MASTER, LeagueQueueType.RANKED_SOLO_5x5, masterLeague2);
-        Set<LeagueEntry> gold3Leagues = irelia.league().byQueue(LeagueQueueType.RANKED_SOLO_5x5, LeagueTier.GOLD, LeagueRank.III, 5).join();
-        for(LeagueEntry gold3League : gold3Leagues){
-            assertLeague(LeagueTier.GOLD,LeagueQueueType.RANKED_SOLO_5x5,gold3League);
+        Set<LeagueEntry> gold3Leagues = irelia.league()
+                .byQueue(LeagueQueueType.RANKED_SOLO_5x5, LeagueTier.GOLD, LeagueRank.III, 5).join();
+        for (LeagueEntry gold3League : gold3Leagues) {
+            assertLeague(LeagueTier.GOLD, LeagueQueueType.RANKED_SOLO_5x5, gold3League);
         }
     }
 
-    private void assertLeague(LeagueTier expectedTier, LeagueQueueType expectedType, LeagueList league){
+    private void assertLeague(LeagueTier expectedTier, LeagueQueueType expectedType, LeagueList league) {
         assertEquals(expectedTier, league.getTier());
         assertEquals(expectedType, league.getQueue());
     }
 
-    private void assertLeague(LeagueTier expectedTier, LeagueQueueType expectedType, LeagueEntry league){
+    private void assertLeague(LeagueTier expectedTier, LeagueQueueType expectedType, LeagueEntry league) {
         assertEquals(expectedTier, league.getTier());
         assertEquals(expectedType, league.getQueueType());
     }

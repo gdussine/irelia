@@ -11,20 +11,27 @@ public class RiotRequestRate {
 	private static final Pattern PATTERN = Pattern.compile("(\\d{1,5}):(\\d{1,5})");
 
 	public RiotRequestRate(String header) {
-		this.setHeader(header);
+		if (header != null) {
+			Matcher matcher = PATTERN.matcher(header);
+			if (matcher.find() && matcher.groupCount() == 2) {
+				this.count = Integer.parseInt(matcher.group(1));
+				this.time = Integer.parseInt(matcher.group(2));
+			}
+		}
+
 	}
 
-	public void setHeader(String header) {
-		if (header == null)
-			return;
-		Matcher matcher = PATTERN.matcher(header);
-		if (!matcher.find())
-			return;
-		if (matcher.groupCount() != 2)
-			return;
-		this.count = Integer.parseInt(matcher.group(1));
-		this.time = Integer.parseInt(matcher.group(2));
-	}
+	// public void setHeader(String header) {
+	// if (header == null)
+	// return;
+	// Matcher matcher = PATTERN.matcher(header);
+	// if (!matcher.find())
+	// return;
+	// if (matcher.groupCount() != 2)
+	// return;
+	// this.count = Integer.parseInt(matcher.group(1));
+	// this.time = Integer.parseInt(matcher.group(2));
+	// }
 
 	public int getCount() {
 		return count;
@@ -55,7 +62,5 @@ public class RiotRequestRate {
 		RiotRequestRate other = (RiotRequestRate) obj;
 		return count == other.count && time == other.time;
 	}
-	
-	
 
 }

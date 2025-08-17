@@ -1,10 +1,13 @@
 package irelia.data.match;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import irelia.data.account.Account;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Participant {
     private int allInPings; // Yellow crossed swords.
     private int assistMePings; // Green flag.
@@ -72,18 +75,6 @@ public class Participant {
     private int objectivesStolenAssists; // Number of assists for objectives stolen.
     private int onMyWayPings; // Blue arrow pointing at ground.
     private int participantId; // Unique identifier for the participant.
-    private int playerScore0; // Player score for score 0.
-    private int playerScore1; // Player score for score 1.
-    private int playerScore2; // Player score for score 2.
-    private int playerScore3; // Player score for score 3.
-    private int playerScore4; // Player score for score 4.
-    private int playerScore5; // Player score for score 5.
-    private int playerScore6; // Player score for score 6.
-    private int playerScore7; // Player score for score 7.
-    private int playerScore8; // Player score for score 8.
-    private int playerScore9; // Player score for score 9.
-    private int playerScore10; // Player score for score 10.
-    private int playerScore11; // Player score for score 11.
     private int pentaKills; // Number of pentakills.
     private Perks perks; // Perks related to the participant.
     private int physicalDamageDealt; // Physical damage dealt.
@@ -147,11 +138,55 @@ public class Participant {
     private int wardsKilled; // Number of wards killed.
     private int wardsPlaced; // Number of wards placed.
     private boolean win; // Indicates if the participant won the game.
-
     private int basicPings;
     private int dangerPings;
 
-    
+    @JsonProperty("playerAugment6")
+    private int playerAugment6;
+
+    @JsonProperty("playerAugment5")
+    private int playerAugment5;
+
+    @JsonProperty("retreatPings")
+    private int retreatPings;
+
+    @JsonProperty("PlayerScore0")
+    private int playerScore0;
+
+    @JsonProperty("PlayerScore1")
+    private int playerScore1;
+
+    @JsonProperty("PlayerScore2")
+    private int playerScore2;
+
+    @JsonProperty("PlayerScore3")
+    private int playerScore3;
+
+    @JsonProperty("PlayerScore4")
+    private int playerScore4;
+
+    @JsonProperty("PlayerScore5")
+    private int playerScore5;
+
+    @JsonProperty("PlayerScore6")
+    private int playerScore6;
+
+    @JsonProperty("PlayerScore7")
+    private int playerScore7;
+
+    @JsonProperty("PlayerScore8")
+    private int playerScore8;
+
+    @JsonProperty("PlayerScore9")
+    private int playerScore9;
+
+    @JsonProperty("PlayerScore10")
+    private int playerScore10;
+
+    @JsonProperty("PlayerScore11")
+    private int playerScore11;
+
+    private Map<String, Object> unknownProperties = new HashMap<>();
 
     public int getAllInPings() {
         return allInPings;
@@ -1297,7 +1332,16 @@ public class Participant {
         this.dangerPings = dangerPings;
     }
 
-    public Account getAccount(){
+    public Map<String, Object> getUnknownProperties() {
+        return unknownProperties;
+    }
+
+    @JsonAnySetter
+    public void setUnknownProperty(String key, Object value) {
+        this.unknownProperties.put(key, value);
+    }
+
+    public Account getAccount() {
         Account account = new Account();
         account.setGameName(riotIdGameName);
         account.setTagLine(riotIdTagline);

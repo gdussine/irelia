@@ -1,9 +1,5 @@
 package irelia.data.match;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-
 import irelia.data.community.QueueTypes;
 
 public class MatchQuery {
@@ -74,8 +70,7 @@ public class MatchQuery {
                 sb.append("&");
             sb.append(attrName[i]).append("=").append(attr[i]);
         }
-        sb.insert(0, "?");
-        return sb.toString();
+        return sb.insert(0, "?").toString();
 
 
     }

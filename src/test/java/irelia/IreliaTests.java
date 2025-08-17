@@ -19,8 +19,8 @@ public class IreliaTests {
 
     @BeforeAll
     public static void beforeAll() throws IreliaException {
-        irelia = new Irelia(Launcher.getKeyFromProperties(), Platform.EUW1, Locale.FRANCE);
-        irelia.start();
+        Launcher launcher = new Launcher();
+        irelia = launcher.startIrelia(launcher.getKeyFromProperties(), Platform.EUW1, Locale.FRANCE);
     }
 
 

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 import java.util.concurrent.CompletionException;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -15,6 +16,7 @@ import irelia.core.IreliaException;
 import irelia.data.account.Account;
 import irelia.request.core.RiotRequestException;
 
+@Tag("APITest")
 public class AccountAPITests extends IreliaTests {
 
     @ParameterizedTest

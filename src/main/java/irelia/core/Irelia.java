@@ -10,8 +10,9 @@ import java.util.concurrent.CompletionException;
 import org.slf4j.Logger;
 
 import irelia.api.RiotAPI;
-import irelia.request.limit.RiotAppRateLimiter;
-import irelia.request.limit.RiotRequestSender;
+import irelia.request.limit.v2.IreliaAppQueue;
+import irelia.request.limit.v2.IreliaHttpQueue;
+import irelia.request.limit.v2.IreliaQueueManager;
 import irelia.service.RiotServices;
 import irelia.service.impl.AccountService;
 import irelia.service.impl.ChampionService;
@@ -36,10 +37,11 @@ public class Irelia implements RiotAPI {
 
 	private RiotServices services;
 
-	private RiotAppRateLimiter appRateLimiter;
-	private RiotRequestSender requestSender;
+	private IreliaAppQueue appQueue;
+	private IreliaHttpQueue httpQueue;
 
 	private Logger log;
+	private IreliaQueueManager queueManager;
 
 	public Irelia(String key, Platform platform, Locale locale) {
 		super();
@@ -47,8 +49,9 @@ public class Irelia implements RiotAPI {
 		this.platform = platform;
 		this.region = platform.getRegion();
 		this.locale = locale;
-		this.requestSender = new RiotRequestSender(this);
-		this.appRateLimiter = new RiotAppRateLimiter(this);
+		this.appQueue = new IreliaAppQueue(this);
+		this.httpQueue = new IreliaHttpQueue(this);
+		this.queueManager = new IreliaQueueManager();
 		this.log = IreliaLogger.CORE.logger(getClass());
 		this.http = HttpClient.newBuilder().version(Version.HTTP_2).followRedirects(Redirect.NORMAL).build();
 		this.services = new RiotServices(this);
@@ -59,8 +62,8 @@ public class Irelia implements RiotAPI {
 			this.log.warn("Irelia is already running.");
 			return;
 		}
-		this.requestSender.start();
-		this.appRateLimiter.start();
+		this.queueManager.start(httpQueue);
+		this.queueManager.start(appQueue);
 		this.services.start();
 		try {
 			this.status().platformData().join();
@@ -76,21 +79,33 @@ public class Irelia implements RiotAPI {
 			this.log.warn("Irelia is not running.");
 			return;
 		}
-		this.appRateLimiter.stop();
-		this.requestSender.stop();
+		this.log.info("Irelia stopping.");
 		this.services.stop();
+		this.queueManager.stop();
 		this.http.shutdown();
 		try {
-			this.http.awaitTermination(Duration.ofSeconds(5));
+			if (!this.http.awaitTermination(Duration.ofSeconds(5)))
+				this.http.shutdownNow();
 		} catch (InterruptedException e) {
 			this.http.shutdownNow();
 		}
-		this.log.info("Irelia stopped.");
 		running = false;
 	}
 
 	public boolean isRunning() {
 		return running;
+	}
+
+	public IreliaHttpQueue getHttpQueue() {
+		return httpQueue;
+	}
+
+	public IreliaAppQueue getAppQueue() {
+		return appQueue;
+	}
+
+	public IreliaQueueManager getQueueManager() {
+		return queueManager;
 	}
 
 	public String getKey() {
@@ -115,14 +130,6 @@ public class Irelia implements RiotAPI {
 
 	public String getLang() {
 		return locale.getLanguage() + "_" + locale.getCountry();
-	}
-
-	public RiotAppRateLimiter getAppRateLimiter() {
-		return appRateLimiter;
-	}
-
-	public RiotRequestSender getRequestSender() {
-		return requestSender;
 	}
 
 	@Override
@@ -166,7 +173,7 @@ public class Irelia implements RiotAPI {
 		return services.champion();
 	}
 
-	public MasteryService mastery(){
+	public MasteryService mastery() {
 		return mastery();
 	}
 

@@ -1,46 +1,43 @@
 package irelia.service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import irelia.core.Irelia;
 import irelia.core.IreliaException;
 import irelia.core.Platform;
 import irelia.core.Region;
 import irelia.request.core.RiotRequest;
 import irelia.request.core.RiotRequestBuilder;
 import irelia.request.core.RiotRequestType;
-import irelia.request.limit.RiotMethodRateLimiter;
+import irelia.request.limit.v2.IreliaMethodQueue;
 
-public class RateLimitedRiotService extends RiotService{
+public class RateLimitedRiotService extends RiotService {
 
-	private Map<String, RiotMethodRateLimiter> rateLimiters;
+	private Map<String, IreliaMethodQueue> methodQueues = new HashMap<>();
 
 	public RateLimitedRiotService() {
-		this.rateLimiters = new HashMap<>();
 	}
 
-	protected synchronized RiotMethodRateLimiter getRateLimiter(String endpoint) {
-		RiotMethodRateLimiter result = rateLimiters.get(endpoint);
+	@Override
+	protected IreliaMethodQueue getIreliaQueue(String endpoint) {
+		IreliaMethodQueue result = methodQueues.get(endpoint);
 		if (result == null) {
-			result = new RiotMethodRateLimiter(irelia, endpoint);
-			result.start();
-			rateLimiters.put(endpoint, result);
+			result = new IreliaMethodQueue(irelia, endpoint, this);
+			this.irelia.getQueueManager().start(result);
+			methodQueues.put(endpoint, result);
 		}
 		return result;
+
 	}
 
 	public void stop() throws IreliaException {
-		for (Entry<String, RiotMethodRateLimiter> s : rateLimiters.entrySet()) {
-			try {
-				s.getValue().stop();
-			} catch (IreliaException e) {
-				throw IreliaException.riotServiceFailedStop(this, e);
-			}
-		}
+	}
+
+	public void disconnectQueue(IreliaMethodQueue queue){
+		methodQueues.remove(queue.getEndpoint());
 	}
 
 	protected <T> RiotRequest<T> createAPIRequest(TypeReference<T> type, Region region, String uri, Object... args) {

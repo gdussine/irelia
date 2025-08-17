@@ -2,7 +2,7 @@ package irelia.data.league;
 
 public class LeagueEntry {
 
-	private String leagueId, summonerId;
+	private String leagueId, puuid;
 	private LeagueRank rank;
 	private LeagueTier tier;
 	private LeagueQueueType queueType;
@@ -18,12 +18,12 @@ public class LeagueEntry {
 		this.leagueId = leagueId;
 	}
 
-	public String getSummonerId() {
-		return summonerId;
+	public String getPuuid() {
+		return puuid;
 	}
 
-	public void setSummonerId(String summonerId) {
-		this.summonerId = summonerId;
+	public void setPuuid(String puuid) {
+		this.puuid = puuid;
 	}
 
 	public LeagueQueueType getQueueType() {

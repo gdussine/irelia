@@ -8,8 +8,4 @@ public interface SummonerAPI {
 
     public CompletableFuture<Summoner> byPuuid(String puuid);
 
-    public CompletableFuture<Summoner> byAccount(String accountId);
-
-    public CompletableFuture<Summoner> BySummoner(String summonerId);
-
 }

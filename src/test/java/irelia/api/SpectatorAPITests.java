@@ -3,6 +3,7 @@ package irelia.api;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import irelia.IreliaTests;
@@ -11,6 +12,7 @@ import irelia.data.spectator.FeaturedGameInfo;
 import irelia.data.spectator.FeaturedGameParticipant;
 import irelia.data.spectator.FeaturedGames;
 
+@Tag("APITest")
 public class SpectatorAPITests extends IreliaTests {
 
     @Test

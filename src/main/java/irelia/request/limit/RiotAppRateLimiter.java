@@ -13,31 +13,25 @@ public class RiotAppRateLimiter extends RiotRequestManager {
 
 	public RiotAppRateLimiter(Irelia irelia) {
 		super(irelia);
-		this.next = irelia.getRequestSender();
+		this.next = null;
 
 	}
 
 	@Override
 	protected void run(RiotRequest<?> request) throws InterruptedException {
-		if (rates != null) {
-			long timeToWait = rates.getTimeToWait();
-			if (timeToWait > 0) {
-				this.log.warn("App rate limite reach. Wait for %s ms".formatted(timeToWait));
-				Thread.sleep(timeToWait);
-			}
+		long timeToWait = rates.getWaitingTime();
+		if (timeToWait > 0) {
+			this.log.warn("App rate limite reach. Wait for %s ms".formatted(timeToWait));
+			Thread.sleep(timeToWait);
 		}
-		next.submit(request).handle((respons,t) -> {
-			if(respons == null){
+		next.submit(request).handle((respons, t) -> {
+			if (respons == null) {
 				this.log.error("Request Error: %s.".formatted(t.getClass().getSimpleName()));
 				return respons;
 			}
 			String limitHeader = respons.headers().firstValue(APP_RATE_LIMIT_HEADER).orElse(null);
 			String countHeader = respons.headers().firstValue(APP_RATE_COUNT_HEADER).orElse(null);
-			if (this.rates == null)
-				this.rates = new RiotRequestRates(limitHeader, countHeader);
-			else {
-				rates.updateCounts(limitHeader, countHeader);
-			}
+			rates.update(limitHeader, countHeader);
 			return respons;
 		});
 	}

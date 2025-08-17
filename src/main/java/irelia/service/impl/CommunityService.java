@@ -5,7 +5,6 @@ import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import irelia.core.Irelia;
 import irelia.data.community.QueueInfo;
 import irelia.request.core.RiotRequest;
 import irelia.service.RiotService;

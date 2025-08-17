@@ -2,65 +2,55 @@ package irelia.request.limit;
 
 import java.net.http.HttpHeaders;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RiotRequestRates {
 
-	private List<RiotRequestRate> limits = new ArrayList<>();
-	private List<RiotRequestRate> counts = new ArrayList<>();
-	private List<Long> refresh = new ArrayList<>();
+	private List<RiotRequestRateObject> rates;
+	private String limitHeaderName, countHeaderName;
 
-	public RiotRequestRates(String limitHeader, String countHeader) {
-		Arrays.stream(limitHeader.split(",")).forEach(s -> limits.add(new RiotRequestRate(s)));
-		Arrays.stream(countHeader.split(",")).forEach(s -> counts.add(new RiotRequestRate(s)));
-		limits.forEach(x -> refresh.add(System.currentTimeMillis()));
+	public RiotRequestRates() {
 	}
 
-	public RiotRequestRates(List<RiotRequestRate> limits, List<RiotRequestRate> counts, List<Long> refresh) {
-		this.limits = limits;
-		this.counts = counts;
-		this.refresh = refresh;
+	public RiotRequestRates(String limitHeaderName, String countHeaderName ){
+		this.limitHeaderName = limitHeaderName;
+		this.countHeaderName = countHeaderName;
+
 	}
 
-	public RiotRequestRates updateCounts(String limitHeader, String countHeader) {
-		String[] countHeaderStrings = countHeader.split(",");
-		List<RiotRequestRate> newcounts = new ArrayList<>();
-		List<Long> newrefresh = new ArrayList<>();
-		for (int i = 0; i < countHeaderStrings.length; i++) {
-			RiotRequestRate newcount = new RiotRequestRate(countHeaderStrings[i]);
-			newcounts.add(newcount);
-			if (newcount.getCount() == 1) {
-				newrefresh.add(System.currentTimeMillis());
-			} else {
-				newrefresh.add(refresh.get(i));
+	public void update(HttpHeaders headers){
+        this.update(headers.firstValue(limitHeaderName).orElse(null), headers.firstValue(countHeaderName).orElse(null));
+	}
+
+	public void update(String limitHeaders, String countHeaders) {
+		String[] limitHeaderArray = limitHeaders.split(",");
+		String[] countHeaderArray = countHeaders.split(",");
+		if (rates == null) {
+			rates = new ArrayList<>();
+			for (int i = 0; i < limitHeaderArray.length; i++) {
+				rates.add(new RiotRequestRateObject(limitHeaderArray[i], countHeaderArray[i]));
 			}
-		}
-		this.refresh = newrefresh;
-		this.counts = newcounts;
-		return this;
+		} else
+			for (int i = 0; i < countHeaderArray.length; i++) {
+				rates.get(i).update(limitHeaderArray[i], countHeaderArray[i]);
+			}
 	}
 
-	public RiotRequestRates(HttpHeaders headers) {
-		this(headers.firstValue("x-app-rate-limit").orElse(null),
-				// headers.firstValue("x-app-rate-limit-count").orElse(null),
-				headers.firstValue("x-method-rate-limit").orElse(null));
-		// ,headers.firstValue("x-method-rate-limit-count").orElse(null));
+	public long getWaitingTime() {
+		if(rates == null)
+			return 0;
+		return rates.stream().map(x -> x.getWaitingTime()).max(Long::compareTo).orElse(0L);
 	}
 
-	public long getTimeToWait() {
-		long time = 0;
-		for (int i = 0; i < limits.size(); i++) {
-			if (counts.get(i).getCount() != limits.get(i).getCount())
-				continue;
-			time = Math.max(time, refresh.get(i) + limits.get(i).getTime()*1000 - System.currentTimeMillis() );
-		}
-		return Math.max(0, time);
+	public long getMaxiumTime(){
+		if(rates == null)
+			return 0;
+		return rates.stream().map(x->x.getLimitTime()).max(Long::compareTo).orElse(0L);
 	}
 
 	@Override
 	public String toString() {
-		return "%s (%s)".formatted(counts, limits);
+		return rates.toString();
 	}
 
 }

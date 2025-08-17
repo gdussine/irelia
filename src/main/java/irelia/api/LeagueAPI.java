@@ -11,7 +11,7 @@ import irelia.data.league.LeagueTier;
 
 public interface LeagueAPI {
 
-    public CompletableFuture<Set<LeagueEntry>> bySummoner(String summonerId);
+    public CompletableFuture<Set<LeagueEntry>> byPuuid(String puuid);
 
     public CompletableFuture<LeagueList> challengerByQueue(LeagueQueueType queueType);
 

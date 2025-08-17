@@ -8,7 +8,7 @@ public class LeagueItem {
 
     private MiniSeries miniSeries;
 
-    private String summonerId;
+    private String puuid;
 
     private LeagueRank rank;
 
@@ -76,12 +76,12 @@ public class LeagueItem {
         this.miniSeries = miniSeries;
     }
 
-    public String getSummonerId() {
-        return summonerId;
+    public String getPuuid() {
+        return puuid;
     }
 
-    public void setSummonerId(String summonerId) {
-        this.summonerId = summonerId;
+    public void setPuuid(String puuid) {
+        this.puuid = puuid;
     }
 
     public LeagueRank getRank() {
