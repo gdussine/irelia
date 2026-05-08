@@ -50,5 +50,14 @@ public class RiotRequestStatus {
 		RiotRequestStatus other = (RiotRequestStatus) obj;
 		return code == other.code;
 	}
+
+	public static RiotRequestStatus status200(){
+		return new RiotRequestStatus("OK", 200);
+	}
+
+	@Override
+	public String toString() {
+		return "%d %s".formatted(code, message);
+	}
 	
 }

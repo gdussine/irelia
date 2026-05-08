@@ -48,7 +48,7 @@ public class DDragonService extends RiotService {
 		cachedDDragon = null;
 	}
 
-	public CompletableFuture<InputStream> getProfileIcon(Integer iconId) {
+	public CompletableFuture<byte[]> getProfileIcon(Integer iconId) {
 		String fullname = getCachedDDragon().getIcon(iconId).getImage().getFull();
 		TypeReference<InputStream> type = new TypeReference<InputStream>() {
 		};
@@ -57,7 +57,7 @@ public class DDragonService extends RiotService {
 		return getInputStreamAsync(request);
 	}
 
-	public CompletableFuture<InputStream> getChampionIcon(Champions champion) {
+	public CompletableFuture<byte[]> getChampionIcon(Champions champion) {
 		String fullname = getCachedDDragon().getChampion(champion).getImage().getFull();
 		TypeReference<InputStream> type = new TypeReference<InputStream>() {
 		};
@@ -66,7 +66,7 @@ public class DDragonService extends RiotService {
 		return getInputStreamAsync(request);
 	}
 
-	public CompletableFuture<InputStream> getChampionSplash(Champions champion, int skinId) {
+	public CompletableFuture<byte[]> getChampionSplash(Champions champion, int skinId) {
 		String fullname = getCachedDDragon().getChampion(champion).getId();
 		TypeReference<InputStream> type = new TypeReference<InputStream>() {
 		};

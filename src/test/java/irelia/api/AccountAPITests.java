@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import irelia.IreliaTests;
 import irelia.core.IreliaException;
 import irelia.data.account.Account;
-import irelia.request.core.RiotRequestException;
+import irelia.request.limit.v3.RiotResponseException;
 
 @Tag("APITest")
 public class AccountAPITests extends IreliaTests {
@@ -50,9 +50,9 @@ public class AccountAPITests extends IreliaTests {
     @ValueSource (strings = {"Guillaume#EUW9"})
     public void nonExistingAccount(String riotId){
         CompletionException ce = assertThrowsExactly(CompletionException.class, () -> irelia.account().byRiotId(riotId).join());
-        assertInstanceOf(RiotRequestException.class, ce.getCause());
-        RiotRequestException re = (RiotRequestException) ce.getCause();
-        assertEquals(404, re.getStatus().getCode());
+        assertInstanceOf(RiotResponseException.class, ce.getCause());
+        RiotResponseException re = (RiotResponseException) ce.getCause();
+        assertEquals(404, re.getStatus().getStatus().getCode());
     }
 
     private void checkAccount(Account account, String gameName, String tagLine) {

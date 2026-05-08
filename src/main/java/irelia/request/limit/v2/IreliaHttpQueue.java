@@ -6,6 +6,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 import irelia.core.Irelia;
 import irelia.request.core.RiotRequest;
+import irelia.request.limit.v3.RiotResponse;
 
 public class IreliaHttpQueue extends IreliaQueue {
 
@@ -14,17 +15,18 @@ public class IreliaHttpQueue extends IreliaQueue {
     }
 
     @Override
-    public void onResponseReceived(HttpResponse<byte[]> response) {
+    public <X> void onResponseReceived(RiotResponse<X> response) {
     }
 
     @Override
-    public void onRequestSend(RiotRequest<?> request) throws InterruptedException {
+    public <X> void onRequestSend(RiotRequest<X> request) throws InterruptedException {
         try {
-            HttpResponse<byte[]> respons = irelia.getHttp().send(request.getRequest(), BodyHandlers.ofByteArray());
-            request.getPayload().complete(respons);
+            HttpResponse<byte[]> httpResponse = irelia.getHttp().send(request.getRequest(), BodyHandlers.ofByteArray());
+            RiotResponse<X> response = new RiotResponse<>(request, httpResponse);
+            request.getFuture().complete(response);
         } catch (IOException e) {
-            request.getPayload().completeExceptionally(e);
-        }
+            throw new RuntimeException("Fail to contact endpoint", e);
+        } 
     }
 
 }

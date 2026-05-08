@@ -23,7 +23,7 @@ import irelia.data.summoner.Summoner;
 public class LeagueAPITests extends IreliaTests {
 
     @ParameterizedTest
-    @ValueSource(strings = { "Lukuu#EUW", "Guillaume#EUW", "Guillaume#TOP" })
+    @ValueSource(strings = { "LaMaliceMaxHehe#Heheh", "Guillaume#EUW", "Guillaume#TOP" })
     public void rankedPlayer(String riotId) {
         Account account = irelia.account().byRiotId(riotId).join();
         Summoner summoner = irelia.summoner().byPuuid(account.getPuuid()).join();

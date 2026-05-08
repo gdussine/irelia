@@ -7,13 +7,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class StatusUpdate {
 
     private int id;
+
     private String author;
+
     private boolean publish;
+
     @JsonProperty("publish_locations")
     private List<String> publishLocations;
+
     private List<StatusContent> translations;
+
     @JsonProperty("created_at")
     private String createdAt;
+
     @JsonProperty("updated_at")
     private String updatedAt;
 

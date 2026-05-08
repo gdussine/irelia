@@ -57,8 +57,9 @@ public class RiotRequestBuilder<T> {
 	public RiotRequest<T> build() {
 		URI urlString = URI.create(requestType.url(platform, this.uri));
 		HttpRequest.Builder request = HttpRequest.newBuilder().GET().uri(urlString).timeout(Duration.ofSeconds(10));
-		if(requestType.equals(RiotRequestType.API))
+		if (requestType.equals(RiotRequestType.API)) {
 			request.header(API_TOKEN_HEADER, riot.getKey());
+		}
 		return new RiotRequest<T>(request.build(), requestType, type, endpoint);
 	}
 }

@@ -20,7 +20,8 @@ public class IreliaTests {
     @BeforeAll
     public static void beforeAll() throws IreliaException {
         Launcher launcher = new Launcher();
-        irelia = launcher.startIrelia(launcher.getKeyFromProperties(), Platform.EUW1, Locale.FRANCE);
+        String apiKey = launcher.getKeyFromProperties();
+        irelia = launcher.startIrelia(apiKey, Platform.EUW1, Locale.FRANCE);
     }
 
 

@@ -2,41 +2,57 @@ package irelia.tools;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.concurrent.CompletionException;
 import java.util.function.Consumer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import irelia.core.Irelia;
 import irelia.core.IreliaException;
 import irelia.core.Platform;
+import irelia.data.account.Account;
+import irelia.tools.lib.IreliaEnumBuilder;
 
 public class Launcher {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	protected Irelia irelia;
 
 	public String getKeyFromProperties() {
-		InputStream in = Launcher.class.getClassLoader().getResourceAsStream("secrets.properties");
 		Properties prop = new Properties();
-		try {
+		try (InputStream in = Launcher.class.getClassLoader().getResourceAsStream("secrets.properties")) {
 			prop.load(in);
-			return prop.getProperty("apikey");
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
+		} catch (Exception e1) {
+			throw IreliaException.keyNotFound(e1);
 		}
+		String key = prop.getProperty("apikey");
+		if (!checkApiKey(key)) {
+			throw IreliaException.keyIllegal();
+		}
+		return key;
+	}
+
+	public boolean checkApiKey(String apiKey) {
+		if (apiKey == null)
+			return false;
+		if (apiKey.length() < 10)
+			return false;
+		if (!apiKey.startsWith("RGAPI"))
+			return false;
+		return true;
 	}
 
 	public Irelia startIrelia(String apiKey, Platform platform, Locale locale) {
 		if (irelia != null)
 			return irelia;
-		irelia = new Irelia(getKeyFromProperties(), platform, locale);
-		try {
-			irelia.start();
-			return irelia;
-		} catch (IreliaException e) {
-			e.printStackTrace();
-			return null;
-		}
+		irelia = new Irelia(apiKey, platform, locale);
+		irelia.start();
+		return irelia;
 	}
 
 	public void loop(String apiKey, Consumer<Irelia> consumer) {
@@ -53,5 +69,21 @@ public class Launcher {
 		} catch (IreliaException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void main(String[] args) throws InterruptedException {
+		Launcher l = new Launcher();
+		String key = l.getKeyFromProperties();
+		Irelia irelia = l.startIrelia(key, Platform.EUW1, Locale.FRANCE);
+		Thread.sleep(Duration.ofSeconds(3));
+		Account acc = irelia.account().byRiotId("Guillaume", "TOP").exceptionally(t -> null).join();
+		System.out.println(acc);
+		try {
+			new IreliaEnumBuilder(irelia).buildChampions();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		irelia.stop();
 	}
 }

@@ -97,6 +97,4 @@ public class StatusData {
         this.platforms = platforms;
     }
 
-    
-    
 }

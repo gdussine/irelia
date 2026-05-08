@@ -1,6 +1,5 @@
 package irelia.request.limit.v2;
 
-import java.net.http.HttpResponse;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
@@ -11,6 +10,7 @@ import org.slf4j.Logger;
 import irelia.core.Irelia;
 import irelia.core.IreliaLogger;
 import irelia.request.core.RiotRequest;
+import irelia.request.limit.v3.RiotResponse;
 
 public abstract class IreliaQueue {
 
@@ -31,14 +31,13 @@ public abstract class IreliaQueue {
         this.irelia = irelia;
     }
 
-    public abstract void onResponseReceived(HttpResponse<byte[]> response) throws InterruptedException;
+    public abstract <X> void onResponseReceived(RiotResponse<X> response) throws InterruptedException;
 
-    public abstract void onRequestSend(RiotRequest<?> request) throws InterruptedException;
+    public abstract <X> void onRequestSend(RiotRequest<X> request) throws InterruptedException;
 
-    public void onStopped(){
+    public void onStopped() {
 
     }
-
 
     public void put(RiotRequest<?> request) {
         try {
@@ -61,14 +60,14 @@ public abstract class IreliaQueue {
                 log.info("Request \"{}\" send", request);
                 if (request != null) {
                     onRequestSend(request);
-                    HttpResponse<byte[]> response = request.getPayload().join();
+                    RiotResponse<?> response = request.getFuture().join();
                     onResponseReceived(response);
                 }
             } while (request != null);
             log.info("Queue \"{}\" auto shutdown", getName());
         } catch (Exception e) {
             log.debug("Queue \"%s\" interrupted. (pending=%s)".formatted(getName(), queue));
-        } finally{
+        } finally {
             onStopped();
         }
     }

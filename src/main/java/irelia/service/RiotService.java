@@ -1,8 +1,5 @@
 package irelia.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -68,23 +65,22 @@ public class RiotService {
 				.build();
 	}
 
-	protected CompletableFuture<InputStream> getInputStreamAsync(RiotRequest<?> request) {
-		CompletableFuture<InputStream> result = new CompletableFuture<InputStream>();
+	protected CompletableFuture<byte[]> getInputStreamAsync(RiotRequest<?> request) {
+		CompletableFuture<byte[]> result = new CompletableFuture<byte[]>();
 		this.getIreliaQueue(request.getEndpoint()).put(request);
-		request.getPayload().handleAsync((respons, t) -> {
+		request.getFuture().handleAsync((respons, t) -> {
 			long time = (System.currentTimeMillis() - request.getStartTime());
 			try {
 				if (t != null)
 					throw new Exception(t);
 				if (respons.statusCode() / 100 != 2 && request.getRequestType().isRiotAPI()) {
-					System.out.println(new String(respons.body(), StandardCharsets.UTF_8));
 					throw new RiotRequestException(request,
 							mapper.readValue(respons.body(), RiotRequestStatusObject.class).getStatus());
 				} else if (respons.statusCode() / 100 != 2)
 					throw new RiotRequestException(request,
 							new RiotRequestStatus("External API Provider Exception", respons.statusCode()));
 				this.log.debug("Request: {}, Respons: \"{} OK\" in {}ms.", request, respons.statusCode(), time);
-				result.complete(new ByteArrayInputStream(respons.body()));
+				result.complete(respons.body());
 			} catch (Exception e) {
 				this.log.warn("Request: {},Respons {} in {}ms.", request, e.getMessage(), time);
 				result.completeExceptionally(e);
@@ -94,23 +90,13 @@ public class RiotService {
 		return result;
 	}
 
-	protected <T> CompletableFuture<T> getAsync(RiotRequest<T> request) {
-		CompletableFuture<T> result = new CompletableFuture<>();
-		CompletableFuture<InputStream> futureInput = this.getInputStreamAsync(request);
-		futureInput.handle((in, ex) -> {
-			if (in == null) {
-				return result.completeExceptionally(ex);
-			}
-			try {
-				T t = mapper.readValue(in, request.getType());
-				in.close();
-				return result.complete(t);
-			} catch (Exception e) {
-				this.log.warn("Exception during the respons mapping of {}", request);
-				return result.completeExceptionally(e);
-			}
+	protected <X> CompletableFuture<X> getAsync(RiotRequest<X> request) {
+		this.getIreliaQueue(request.getEndpoint()).put(request);
+		return request.getFuture().handle((res, e) -> {
+			if(res == null)
+				return null;
+			return res.payload();
 		});
-		return result;
 	}
 
 }

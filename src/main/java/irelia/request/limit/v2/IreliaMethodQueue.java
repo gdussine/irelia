@@ -1,11 +1,11 @@
 package irelia.request.limit.v2;
 
-import java.net.http.HttpResponse;
 import java.util.concurrent.TimeUnit;
 
 import irelia.core.Irelia;
 import irelia.request.core.RiotRequest;
 import irelia.request.limit.RiotRequestRates;
+import irelia.request.limit.v3.RiotResponse;
 import irelia.service.RateLimitedRiotService;
 
 public class IreliaMethodQueue extends IreliaQueue {
@@ -27,12 +27,12 @@ public class IreliaMethodQueue extends IreliaQueue {
     }
 
     @Override
-    public void onResponseReceived(HttpResponse<byte[]> response) {
+    public <X> void onResponseReceived(RiotResponse<X> response) {
         rates.update(response.headers());
     }
 
     @Override
-    public void onRequestSend(RiotRequest<?> request) {
+    public <X> void onRequestSend(RiotRequest<X>  request) {
         irelia.getQueueManager().getScheduler().schedule(() -> {
             irelia.getAppQueue().put(request);
         }, rates.getWaitingTime(), TimeUnit.MILLISECONDS);
