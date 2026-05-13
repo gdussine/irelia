@@ -4,22 +4,25 @@
     <!-- Console appender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%cyan(%-5level %logger{36} :) %msg%n</pattern>
         </encoder>
 
         <!-- Global threshold INFO+ -->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
+            <level>DEBUG</level>
         </filter>
     </appender>
 
     <!-- Specific package limiter -->
-    <logger name="irelia.limiter" level="ERROR" additivity="false">
+    <logger name="irelia.limiter" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <!-- Root logger -->
-    <root level="INFO">
+    <logger name="irelia.service" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
     </root>
 

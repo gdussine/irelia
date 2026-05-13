@@ -19,8 +19,6 @@ import irelia.tools.lib.IreliaEnumBuilder;
 
 public class Launcher {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
-
 	protected Irelia irelia;
 
 	public String getKeyFromProperties() {
@@ -76,13 +74,7 @@ public class Launcher {
 		String key = l.getKeyFromProperties();
 		Irelia irelia = l.startIrelia(key, Platform.EUW1, Locale.FRANCE);
 		Thread.sleep(Duration.ofSeconds(3));
-		Account acc = irelia.account().byRiotId("Guillaume", "TOP").exceptionally(t -> null).join();
-		System.out.println(acc);
-		try {
-			new IreliaEnumBuilder(irelia).buildChampions();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		irelia.account().byRiotId("Guillaume", "TOP").exceptionally(t -> null).join();
 		irelia.stop();
 	}
 }

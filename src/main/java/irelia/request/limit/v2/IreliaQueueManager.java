@@ -56,7 +56,7 @@ public class IreliaQueueManager {
             executor.shutdownNow();
             log.error("Queue \"%s\" interrupted during shutdown".formatted(name), e);
         }
-        log.info("Queue \"{}\" shutdown", name);
+        log.debug("Queue \"{}\" shutdown", name);
     }
 
     public void stop() {

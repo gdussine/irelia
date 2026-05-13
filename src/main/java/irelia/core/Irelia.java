@@ -68,7 +68,7 @@ public class Irelia implements RiotAPI {
 		try {
 			this.status().platformData().join();
 			this.running = true;
-			this.log.info("Irelia started.");
+			this.log.debug("Irelia started.");
 		} catch (CompletionException e) {
 			throw IreliaException.failedStart(e);
 		}
@@ -79,7 +79,7 @@ public class Irelia implements RiotAPI {
 			this.log.warn("Irelia is not running.");
 			return;
 		}
-		this.log.info("Irelia stopping.");
+		this.log.debug("Irelia stopping.");
 		this.services.stop();
 		this.queueManager.stop();
 		this.http.shutdown();

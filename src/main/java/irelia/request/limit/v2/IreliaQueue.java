@@ -57,14 +57,14 @@ public abstract class IreliaQueue {
             RiotRequest<?> request = null;
             do {
                 request = get();
-                log.info("Request \"{}\" send", request);
+                log.debug("Request \"{}\" send", request);
                 if (request != null) {
                     onRequestSend(request);
                     RiotResponse<?> response = request.getFuture().join();
                     onResponseReceived(response);
                 }
             } while (request != null);
-            log.info("Queue \"{}\" auto shutdown", getName());
+            log.debug("Queue \"{}\" auto shutdown", getName());
         } catch (Exception e) {
             log.debug("Queue \"%s\" interrupted. (pending=%s)".formatted(getName(), queue));
         } finally {
