@@ -5,7 +5,6 @@ import java.net.URLEncoder;
 import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Arrays;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 

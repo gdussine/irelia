@@ -1,11 +1,6 @@
 package irelia.request.core;
 
 public class RiotRequestException extends Exception{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	private RiotRequest<?> request;
 	private RiotRequestStatus status;

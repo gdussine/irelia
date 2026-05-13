@@ -1,6 +1,5 @@
 package irelia.request.limit.v3;
 
-import irelia.request.core.RiotRequestStatus;
 import irelia.request.core.RiotRequestStatusObject;
 
 public class RiotResponseException extends RuntimeException{

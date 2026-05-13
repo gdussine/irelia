@@ -81,7 +81,6 @@ public class Launcher {
 		try {
 			new IreliaEnumBuilder(irelia).buildChampions();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		irelia.stop();

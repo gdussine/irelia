@@ -55,17 +55,17 @@ public class RiotResponse<T> {
     }
 
     public RiotRequestStatusObject status() {
-        if (statusCode() == 200)
+        if (statusCode() / 100 == 2)
             return new RiotRequestStatusObject(RiotRequestStatus.status200());
         if (request.getRequestType().isRiotAPI()) {
             ObjectMapper mapper = new ObjectMapper();
             try {
                 return mapper.readValue(httpResponse.body(), RiotRequestStatusObject.class);
             } catch (IOException e) {
-                e.printStackTrace();
+                return new RiotRequestStatusObject("Parsing message error", statusCode());
             }
         }
-        return new RiotRequestStatusObject(new RiotRequestStatus("No message", statusCode()));
+        return new RiotRequestStatusObject("No message", statusCode());
 
     }
 

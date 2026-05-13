@@ -12,15 +12,12 @@ public class SampleAccountProvider {
         MITSUKO("mitsuko#ema"),
         ADRY("Adry#metal"),
         GUILLAUME("Guillaume#TOP"),
-        SERGE("Lukuu#EUW"),
         BOZO("Bozo le Cl0wn#EUW"),
         RAMZy("Yayalol91#EUW"),
         BDG("Bandeur de gadji#BDG"),
         SARAH("dohearis#0000"),
         BATMAN("Batman#feur"),
-        MAKAVELI("Mr MakaveIi#Kata"),
-        INES10Z("patrick ademo#000"),
-        REDDISH("Backsh0t#sigma");
+        MAKAVELI("Mr MakaveIi#Kata");
 
         private String riotId;
 
