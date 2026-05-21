@@ -1,4 +1,4 @@
-package irelia.request.limit;
+package irelia.request.rate;
 
 public class RiotRequestRateObject {
 

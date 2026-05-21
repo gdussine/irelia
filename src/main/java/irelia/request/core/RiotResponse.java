@@ -1,4 +1,4 @@
-package irelia.request.limit.v3;
+package irelia.request.core;
 
 import java.io.IOException;
 import java.net.http.HttpHeaders;
@@ -6,9 +6,8 @@ import java.net.http.HttpResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import irelia.request.core.RiotRequest;
-import irelia.request.core.RiotRequestStatus;
-import irelia.request.core.RiotRequestStatusObject;
+import irelia.request.exceptions.RiotResponseException;
+import irelia.request.exceptions.RiotResponseStatus;
 
 public class RiotResponse<T> {
 
@@ -42,31 +41,28 @@ public class RiotResponse<T> {
         return httpResponse.body();
     }
 
-    public T payload() throws RiotResponseException {
+    public T toAPIData() throws RiotResponseException {
         if (statusCode() / 100 != 2) {
-            throw new RiotResponseException(status());
+            throw new RiotResponseException(this);
         }
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.readValue(httpResponse.body(), request.getType());
         } catch (IOException e) {
-            throw new RiotResponseException(status());
+            throw new RiotResponseException(this);
         }
     }
 
-    public RiotRequestStatusObject status() {
-        if (statusCode() / 100 == 2)
-            return new RiotRequestStatusObject(RiotRequestStatus.status200());
-        if (request.getRequestType().isRiotAPI()) {
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                return mapper.readValue(httpResponse.body(), RiotRequestStatusObject.class);
-            } catch (IOException e) {
-                return new RiotRequestStatusObject("Parsing message error", statusCode());
-            }
+    public byte[] toData() throws RiotResponseException {
+        if (statusCode() / 100 != 2) {
+            throw new RiotResponseException(this);
         }
-        return new RiotRequestStatusObject("No message", statusCode());
+        return httpResponse.body();
 
+    }
+
+    public RiotResponseStatus status() {
+        return RiotResponseStatus.byCode(statusCode());
     }
 
 }

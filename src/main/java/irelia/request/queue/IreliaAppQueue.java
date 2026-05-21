@@ -1,11 +1,11 @@
-package irelia.request.limit.v2;
+package irelia.request.queue;
 
 import java.util.concurrent.TimeUnit;
 
 import irelia.core.Irelia;
 import irelia.request.core.RiotRequest;
-import irelia.request.limit.RiotRequestRates;
-import irelia.request.limit.v3.RiotResponse;
+import irelia.request.core.RiotResponse;
+import irelia.request.rate.RiotRequestRates;
 
 public class IreliaAppQueue extends IreliaQueue {
 

@@ -1,4 +1,4 @@
-package irelia.request.limit;
+package irelia.request.rate;
 
 import java.util.Objects;
 import java.util.regex.Matcher;

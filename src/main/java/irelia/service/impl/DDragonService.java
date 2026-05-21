@@ -50,28 +50,28 @@ public class DDragonService extends RiotService {
 
 	public CompletableFuture<byte[]> getProfileIcon(Integer iconId) {
 		String fullname = getCachedDDragon().getIcon(iconId).getImage().getFull();
-		TypeReference<InputStream> type = new TypeReference<InputStream>() {
+		TypeReference<byte[]> type = new TypeReference<byte[]>() {
 		};
-		RiotRequest<InputStream> request = this.createDDragonRequest(type, ICON_URI, getCachedDDragon().getVersion(),
+		RiotRequest<byte[]> request = this.createDDragonRequest(type, ICON_URI, getCachedDDragon().getVersion(),
 				fullname);
-		return getInputStreamAsync(request);
+		return getBytesAsync(request);
 	}
 
 	public CompletableFuture<byte[]> getChampionIcon(Champions champion) {
 		String fullname = getCachedDDragon().getChampion(champion).getImage().getFull();
-		TypeReference<InputStream> type = new TypeReference<InputStream>() {
+		TypeReference<byte[]> type = new TypeReference<byte[]>() {
 		};
-		RiotRequest<InputStream> request = this.createDDragonRequest(type, CHAMPION_ICON_URI,
+		RiotRequest<byte[]> request = this.createDDragonRequest(type, CHAMPION_ICON_URI,
 				getCachedDDragon().getVersion(), fullname);
-		return getInputStreamAsync(request);
+		return getBytesAsync(request);
 	}
 
 	public CompletableFuture<byte[]> getChampionSplash(Champions champion, int skinId) {
 		String fullname = getCachedDDragon().getChampion(champion).getId();
-		TypeReference<InputStream> type = new TypeReference<InputStream>() {
+		TypeReference<byte[]> type = new TypeReference<byte[]>() {
 		};
-		RiotRequest<InputStream> request = this.createDDragonRequest(type, CHAMPION_SPASH_URI, fullname, skinId);
-		return getInputStreamAsync(request);
+		RiotRequest<byte[]> request = this.createDDragonRequest(type, CHAMPION_SPASH_URI, fullname, skinId);
+		return getBytesAsync(request);
 	}
 
 	public CompletableFuture<DDragon> getDDragon() {

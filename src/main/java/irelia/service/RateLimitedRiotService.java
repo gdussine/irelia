@@ -11,7 +11,7 @@ import irelia.core.Region;
 import irelia.request.core.RiotRequest;
 import irelia.request.core.RiotRequestBuilder;
 import irelia.request.core.RiotRequestType;
-import irelia.request.limit.v2.IreliaMethodQueue;
+import irelia.request.queue.IreliaMethodQueue;
 
 public class RateLimitedRiotService extends RiotService {
 

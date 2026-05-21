@@ -10,9 +10,9 @@ import java.util.concurrent.CompletionException;
 import org.slf4j.Logger;
 
 import irelia.api.RiotAPI;
-import irelia.request.limit.v2.IreliaAppQueue;
-import irelia.request.limit.v2.IreliaHttpQueue;
-import irelia.request.limit.v2.IreliaQueueManager;
+import irelia.request.queue.IreliaAppQueue;
+import irelia.request.queue.IreliaHttpQueue;
+import irelia.request.queue.IreliaQueueManager;
 import irelia.service.RiotServices;
 import irelia.service.impl.AccountService;
 import irelia.service.impl.ChampionService;

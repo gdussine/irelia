@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import irelia.IreliaTests;
 import irelia.core.IreliaException;
 import irelia.data.account.Account;
-import irelia.request.limit.v3.RiotResponseException;
+import irelia.request.exceptions.RiotResponseException;
 
 @Tag("APITest")
 public class AccountAPITests extends IreliaTests {
@@ -52,7 +52,7 @@ public class AccountAPITests extends IreliaTests {
         CompletionException ce = assertThrowsExactly(CompletionException.class, () -> irelia.account().byRiotId(riotId).join());
         assertInstanceOf(RiotResponseException.class, ce.getCause());
         RiotResponseException re = (RiotResponseException) ce.getCause();
-        assertEquals(404, re.getStatus().getStatus().getCode());
+        assertEquals(404, re.getCode());
     }
 
     private void checkAccount(Account account, String gameName, String tagLine) {

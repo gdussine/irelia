@@ -5,8 +5,6 @@ import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import irelia.request.limit.v3.RiotResponse;
-
 public class RiotRequest<T> {
 
 	private HttpRequest request;

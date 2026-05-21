@@ -1,4 +1,4 @@
-package irelia.request.limit.v2;
+package irelia.request.queue;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
@@ -6,7 +6,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 import irelia.core.Irelia;
 import irelia.request.core.RiotRequest;
-import irelia.request.limit.v3.RiotResponse;
+import irelia.request.core.RiotResponse;
 
 public class IreliaHttpQueue extends IreliaQueue {
 

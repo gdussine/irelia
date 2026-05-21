@@ -1,4 +1,4 @@
-package irelia.request.limit.v2;
+package irelia.request.queue;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

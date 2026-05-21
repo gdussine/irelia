@@ -1,4 +1,4 @@
-package irelia.request.limit.v2;
+package irelia.request.queue;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import irelia.core.Irelia;
 import irelia.core.IreliaLogger;
 import irelia.request.core.RiotRequest;
-import irelia.request.limit.v3.RiotResponse;
+import irelia.request.core.RiotResponse;
 
 public abstract class IreliaQueue {
 
