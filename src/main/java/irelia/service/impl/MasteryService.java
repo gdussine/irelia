@@ -24,7 +24,7 @@ public class MasteryService extends RateLimitedRiotService implements MasteryAPI
         };
         RiotRequest<List<ChampionMastery>> request = this.createAPIRequest(type, irelia.getRegion(), BY_PUUID_URI,
                 puuid);
-        return getAsync(request);
+        return getRiotObject(request);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class MasteryService extends RateLimitedRiotService implements MasteryAPI
         };
         RiotRequest<ChampionMastery> request = this.createAPIRequest(type, irelia.getRegion(), BY_CHAMPION_URI, puuid,
                 championId);
-        return getAsync(request);
+        return getRiotObject(request);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class MasteryService extends RateLimitedRiotService implements MasteryAPI
         };
         RiotRequest<ChampionMastery> request = this.createAPIRequest(type, irelia.getRegion(), BY_CHAMPION_URI, puuid,
                 champion.getKey());
-        return getAsync(request);
+        return getRiotObject(request);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MasteryService extends RateLimitedRiotService implements MasteryAPI
         TypeReference<List<ChampionMastery>> type = new TypeReference<>() {
         };
         RiotRequest<List<ChampionMastery>> request = this.createAPIRequest(type, irelia.getRegion(), TOP_URI, puuid);
-        return getAsync(request);
+        return getRiotObject(request);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class MasteryService extends RateLimitedRiotService implements MasteryAPI
         TypeReference<Integer> type = new TypeReference<>() {
         };
         RiotRequest<Integer> request = this.createAPIRequest(type, irelia.getRegion(), SCORES_URI, puuid);
-        return getAsync(request);
+        return getRiotObject(request);
     }
 
 }

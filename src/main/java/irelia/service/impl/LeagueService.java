@@ -27,7 +27,7 @@ public class LeagueService extends RateLimitedRiotService implements LeagueAPI {
 		TypeReference<Set<LeagueEntry>> type = new TypeReference<Set<LeagueEntry>>() {
 		};
 		RiotRequest<Set<LeagueEntry>> request = this.createAPIRequest(type, irelia.getPlatform(), BY_PUUID_URI, puuid);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class LeagueService extends RateLimitedRiotService implements LeagueAPI {
 		};
 		RiotRequest<LeagueList> request = this.createAPIRequest(type, irelia.getPlatform(), APEX_BY_QUEUE,
 				tier.name().toLowerCase(), queueType);
-		return getAsync(request);
+		return getRiotObject(request);
 
 	}
 
@@ -59,7 +59,7 @@ public class LeagueService extends RateLimitedRiotService implements LeagueAPI {
 		TypeReference<LeagueList> type = new TypeReference<LeagueList>() {
 		};
 		RiotRequest<LeagueList> request = this.createAPIRequest(type, irelia.getPlatform(), BY_LEAGUE_URI, leagueId);
-		return getAsync(request);
+		return getRiotObject(request);
 
 	}
 
@@ -71,7 +71,7 @@ public class LeagueService extends RateLimitedRiotService implements LeagueAPI {
 		};
 		RiotRequest<Set<LeagueEntry>> request = this.createAPIRequest(type, irelia.getPlatform(), BY_QUEUE_URI + param,
 				queueType, tier, division);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 }

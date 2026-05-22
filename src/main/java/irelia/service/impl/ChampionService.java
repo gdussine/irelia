@@ -17,7 +17,7 @@ public class ChampionService extends RateLimitedRiotService implements ChampionA
     public CompletableFuture<ChampionRotation> rotations() {
         TypeReference<ChampionRotation> type = new TypeReference<ChampionRotation>() {};
         RiotRequest<ChampionRotation> request = this.createAPIRequest(type, irelia.getPlatform(), ROTATIONS);
-        return getAsync(request);
+        return getRiotObject(request);
     }
 
 }

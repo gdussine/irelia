@@ -20,14 +20,14 @@ public class SpectatorService extends RateLimitedRiotService implements Spectato
 		TypeReference<CurrentGameInfo> type = new TypeReference<CurrentGameInfo>() {
 		};
 		RiotRequest<CurrentGameInfo> request = this.createAPIRequest(type, irelia.getPlatform(), BY_PUUID_URI, puuid);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 	public CompletableFuture<FeaturedGames> featuredGames() {
 		TypeReference<FeaturedGames> type = new TypeReference<FeaturedGames>() {
 		};
 		RiotRequest<FeaturedGames> request = this.createAPIRequest(type, irelia.getPlatform(), FEATURED_GAMES_URI);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 

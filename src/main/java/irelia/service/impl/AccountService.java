@@ -11,8 +11,7 @@ import irelia.service.RateLimitedRiotService;
 
 public class AccountService extends RateLimitedRiotService implements AccountAPI {
 
-	private TypeReference<Account> type = new TypeReference<Account>() {
-	};
+	private TypeReference<Account> type = new TypeReference<Account>() {};
 	private final static String BY_RIOT_ID_URI = "riot/account/v1/accounts/by-riot-id/%s/%s";
 	private final static String BY_ID = "riot/account/v1/accounts/by-puuid/%s";
 
@@ -34,19 +33,19 @@ public class AccountService extends RateLimitedRiotService implements AccountAPI
 	public CompletableFuture<Account> byRiotId(Account account) {
 		RiotRequest<Account> request = this.createAPIRequest(type, irelia.getRegion(), BY_RIOT_ID_URI,
 				account.getGameName(), account.getTagLine());
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 	@Deprecated
 	public CompletableFuture<Account> byId(String puuid) {
 		RiotRequest<Account> request = this.createAPIRequest(type, irelia.getRegion(), BY_ID, puuid);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 	@Override
 	public CompletableFuture<Account> byPuuid(String puuid) {
 		RiotRequest<Account> request = this.createAPIRequest(type, irelia.getRegion(), BY_ID, puuid);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 }

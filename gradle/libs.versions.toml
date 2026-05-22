@@ -1,0 +1,25 @@
+# irelia/gradle/libs.versions.toml 
+
+[versions]
+
+# APP DEPENDENCIES
+jackson = "2.21.3"
+slf4j = "2.0.17"
+classgraph = "4.8.179"
+
+# TST DEPENDENCIES
+logback = "1.5.32"
+junit = "6.1.0-RC1"
+
+
+[libraries] 
+
+# APP DEPENDENCIES
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+classgraph-core = { module = "io.github.classgraph:classgraph", version.ref = "classgraph" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-xml = {module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson"}
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }

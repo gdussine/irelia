@@ -1,6 +1,5 @@
 package irelia.service.impl;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -54,7 +53,7 @@ public class DDragonService extends RiotService {
 		};
 		RiotRequest<byte[]> request = this.createDDragonRequest(type, ICON_URI, getCachedDDragon().getVersion(),
 				fullname);
-		return getBytesAsync(request);
+		return getData(request);
 	}
 
 	public CompletableFuture<byte[]> getChampionIcon(Champions champion) {
@@ -63,7 +62,7 @@ public class DDragonService extends RiotService {
 		};
 		RiotRequest<byte[]> request = this.createDDragonRequest(type, CHAMPION_ICON_URI,
 				getCachedDDragon().getVersion(), fullname);
-		return getBytesAsync(request);
+		return getData(request);
 	}
 
 	public CompletableFuture<byte[]> getChampionSplash(Champions champion, int skinId) {
@@ -71,7 +70,7 @@ public class DDragonService extends RiotService {
 		TypeReference<byte[]> type = new TypeReference<byte[]>() {
 		};
 		RiotRequest<byte[]> request = this.createDDragonRequest(type, CHAMPION_SPASH_URI, fullname, skinId);
-		return getBytesAsync(request);
+		return getData(request);
 	}
 
 	public CompletableFuture<DDragon> getDDragon() {
@@ -90,14 +89,14 @@ public class DDragonService extends RiotService {
 		};
 		RiotRequest<List<String>> requestLanguage = this.createDDragonRequest(typeList, LANGUAGES_URI);
 		RiotRequest<List<String>> requestVersion = this.createDDragonRequest(typeList, VERSION_URI);
-		return getAsync(requestLanguage).thenApplyAsync(list -> {
+		return getRiotObject(requestLanguage).thenApplyAsync(list -> {
 			DDragon result = new DDragon();
 			String ddragonLang = list.stream().filter(x -> x.contains(irelia.getLang())).findAny()
 					.orElse("en_US");
 			result.setLang(ddragonLang);
 			return result;
 		}).thenComposeAsync(result -> {
-			return getAsync(requestVersion).thenApplyAsync(list -> {
+			return getRiotObject(requestVersion).thenApplyAsync(list -> {
 				String version = list.get(0);
 				result.setVersion(version);
 				return result;
@@ -105,7 +104,7 @@ public class DDragonService extends RiotService {
 		}).thenComposeAsync(dragon -> {
 			RiotRequest<DDragonObject<ChampionInfo>> request = this.createDDragonRequest(typeChampion, CHAMPIONS_URI,
 					dragon.getVersion(), dragon.getLang());
-			return getAsync(request).thenApplyAsync(obj -> {
+			return getRiotObject(request).thenApplyAsync(obj -> {
 				dragon.setChampions(obj.getData());
 				return dragon;
 			});
@@ -113,13 +112,13 @@ public class DDragonService extends RiotService {
 			RiotRequest<DDragonObject<IconInfo>> request = this.createDDragonRequest(typeIcon, ICONS_URI,
 					dragon.getVersion(),
 					dragon.getLang());
-			return getAsync(request).thenApplyAsync(obj -> {
+			return getRiotObject(request).thenApplyAsync(obj -> {
 				dragon.setIcons(obj.getData());
 				return dragon;
 			});
 		}).thenComposeAsync(dragon -> {
 			RiotRequest<DDragonObject<ItemInfo>> request = this.createDDragonRequest(typeItem,ITEMS_URI,dragon.getVersion(), dragon.getLang());
-			return getAsync(request).thenApplyAsync(obj ->{
+			return getRiotObject(request).thenApplyAsync(obj ->{
 				dragon.setItems(obj.getData());
 				return dragon;
 			});

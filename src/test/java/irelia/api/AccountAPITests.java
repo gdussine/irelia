@@ -1,11 +1,9 @@
 package irelia.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
-
-import java.util.concurrent.CompletionException;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,7 +12,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import irelia.IreliaTests;
 import irelia.core.IreliaException;
 import irelia.data.account.Account;
-import irelia.request.exceptions.RiotResponseException;
 
 @Tag("APITest")
 public class AccountAPITests extends IreliaTests {
@@ -49,10 +46,8 @@ public class AccountAPITests extends IreliaTests {
     @ParameterizedTest
     @ValueSource (strings = {"Guillaume#EUW9"})
     public void nonExistingAccount(String riotId){
-        CompletionException ce = assertThrowsExactly(CompletionException.class, () -> irelia.account().byRiotId(riotId).join());
-        assertInstanceOf(RiotResponseException.class, ce.getCause());
-        RiotResponseException re = (RiotResponseException) ce.getCause();
-        assertEquals(404, re.getCode());
+        Account account = irelia.account().byRiotId(riotId).join();
+        assertNull(account);
     }
 
     private void checkAccount(Account account, String gameName, String tagLine) {

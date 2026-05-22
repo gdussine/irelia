@@ -17,7 +17,7 @@ public class CommunityService extends RiotService{
 	public CompletableFuture<List<QueueInfo>> queue() {
 		TypeReference<List<QueueInfo>> type = new TypeReference<List<QueueInfo>>() {};
 		RiotRequest<List<QueueInfo>> request = this.createRawCommunityRequest(type, QUEUE_JSON_URI);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 }

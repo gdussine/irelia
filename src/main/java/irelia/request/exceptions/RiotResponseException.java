@@ -9,7 +9,7 @@ public class RiotResponseException extends RuntimeException {
 
     public <T> RiotResponseException(RiotResponse<T> response) {
         this.response = response;
-        this.status = response.status();
+        this.status =  RiotResponseStatus.byCode(response.statusCode());
     }
 
     @Override

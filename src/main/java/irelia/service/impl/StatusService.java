@@ -16,13 +16,13 @@ public class StatusService extends  RateLimitedRiotService implements StatusAPI{
     public CompletableFuture<StatusPlatform> platformData() {
         TypeReference<StatusPlatform> type = new TypeReference<StatusPlatform>() {};
         RiotRequest<StatusPlatform> request = this.createAPIRequest(type, irelia.getPlatform(), PLATFORM_URI);
-        return getAsync(request);
+        return getRiotObject(request);
     }
 
     public CompletableFuture<Boolean> isUp() {
         TypeReference<StatusPlatform> type = new TypeReference<StatusPlatform>() {};
         RiotRequest<StatusPlatform> request = this.createAPIRequest(type, irelia.getPlatform(), PLATFORM_URI);
-        return getAsync(request).handle((platform, t) -> t == null);
+        return getRiotObject(request).handle((platform, t) -> t == null);
     }
 
 }

@@ -9,7 +9,7 @@ src/main/resources/*.properties
 
 bin
 out
-gradle
+.gradle
 
 /gradlew
 /gradlew.bat

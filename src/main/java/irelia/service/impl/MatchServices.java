@@ -20,7 +20,7 @@ public class MatchServices extends  RateLimitedRiotService implements MatchAPI{
 	public CompletableFuture<List<String>> byPuuid(String puuid) {
 		TypeReference<List<String>> type = new TypeReference<List<String>>() {};
 		RiotRequest<List<String>> request = this.createAPIRequest(type, irelia.getRegion(), BY_PUUID_URI, puuid);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 	public CompletableFuture<List<String>> byPuuid(String puuid, long startTime, long endTime){
@@ -34,14 +34,14 @@ public class MatchServices extends  RateLimitedRiotService implements MatchAPI{
 	public CompletableFuture<Match> byId(String id){
 		TypeReference<Match> type = new TypeReference<Match>() {};
 		RiotRequest<Match> request = this.createAPIRequest(type, irelia.getRegion(), BY_ID_URI, id);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 	@Override
 	public CompletableFuture<List<String>> byPuuid(String puuid, MatchQuery query) {
 		TypeReference<List<String>> type = new TypeReference<List<String>>() {};
 		RiotRequest<List<String>> request = this.createAPIRequest(type, irelia.getRegion(), BY_PUUID_URI+query.getQueryString(), puuid);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 
 }

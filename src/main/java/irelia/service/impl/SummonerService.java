@@ -21,6 +21,6 @@ public class SummonerService extends RateLimitedRiotService implements SummonerA
 	@Override
 	public CompletableFuture<Summoner> byPuuid(String puuid) {
 		RiotRequest<Summoner> request = this.createAPIRequest(type, irelia.getPlatform(), BY_PUUID_URI, puuid);
-		return getAsync(request);
+		return getRiotObject(request);
 	}
 }

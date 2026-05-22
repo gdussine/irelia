@@ -1,22 +1,15 @@
 package irelia.tools;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.concurrent.CompletionException;
 import java.util.function.Consumer;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import irelia.core.Irelia;
 import irelia.core.IreliaException;
 import irelia.core.Platform;
 import irelia.data.account.Account;
-import irelia.data.summoner.Summoner;
-import irelia.tools.lib.IreliaEnumBuilder;
 
 public class Launcher {
 
