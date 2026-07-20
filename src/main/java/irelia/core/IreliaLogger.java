@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public enum IreliaLogger {
 
-    CORE("irelia.core.Irelia.%s"),
+    CORE("irelia.core.%s"),
     SERVICE( "irelia.service.%s"),
     LIMITER("irelia.limiter.%s");
 
@@ -19,7 +19,6 @@ public enum IreliaLogger {
 
     public Logger logger(Class<?> type){
         return LoggerFactory.getLogger(label.formatted(type.getSimpleName()));
-
     }
 
 }

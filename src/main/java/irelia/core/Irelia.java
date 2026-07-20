@@ -137,10 +137,12 @@ public class Irelia implements RiotAPI {
 		return services.account();
 	}
 
+	@Override
 	public DDragonService ddragon() {
 		return services.ddragon();
 	}
 
+	@Override
 	public LeagueService league() {
 		return services.league();
 	}
@@ -155,6 +157,7 @@ public class Irelia implements RiotAPI {
 		return services.summoner();
 	}
 
+	@Override
 	public MatchServices match() {
 		return services.match();
 	}
@@ -173,6 +176,7 @@ public class Irelia implements RiotAPI {
 		return services.champion();
 	}
 
+	@Override
 	public MasteryService mastery() {
 		return mastery();
 	}

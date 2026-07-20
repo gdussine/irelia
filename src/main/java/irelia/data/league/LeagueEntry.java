@@ -2,21 +2,12 @@ package irelia.data.league;
 
 public class LeagueEntry {
 
-	private String leagueId, puuid;
+	private String puuid;
 	private LeagueRank rank;
 	private LeagueTier tier;
 	private LeagueQueueType queueType;
 	private int leaguePoints, wins, losses;
 	private boolean hotStreak, veteran, freshBlood, inactive;
-	private MiniSeries miniSeries;
-
-	public String getLeagueId() {
-		return leagueId;
-	}
-
-	public void setLeagueId(String leagueId) {
-		this.leagueId = leagueId;
-	}
 
 	public String getPuuid() {
 		return puuid;
@@ -106,13 +97,13 @@ public class LeagueEntry {
 		this.inactive = inactive;
 	}
 
-	public MiniSeries getMiniSeries() {
-		return miniSeries;
-	}
+	// public MiniSeries getMiniSeries() {
+	// 	return miniSeries;
+	// }
 
-	public void setMiniSeries(MiniSeries miniSeries) {
-		this.miniSeries = miniSeries;
-	}
+	// public void setMiniSeries(MiniSeries miniSeries) {
+	// 	this.miniSeries = miniSeries;
+	// }
 
 	public int getElo(){
 		return this.getTier().getEloOffset() + this.getRank().getEloOffset() + this.leaguePoints;

@@ -1,5 +1,8 @@
 package irelia.api;
 
+import irelia.service.impl.DDragonService;
+import irelia.service.impl.MatchServices;
+
 public interface RiotAPI {
 
     public AccountAPI account();
@@ -15,6 +18,10 @@ public interface RiotAPI {
     public MasteryAPI mastery();
 
     public SpectatorAPI spectator();
+
+    public MatchServices match();
+
+    public DDragonService ddragon();
 
 
 

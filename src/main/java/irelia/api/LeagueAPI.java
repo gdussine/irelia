@@ -1,5 +1,6 @@
 package irelia.api;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -11,7 +12,11 @@ import irelia.data.league.LeagueTier;
 
 public interface LeagueAPI {
 
-    public CompletableFuture<Set<LeagueEntry>> byPuuid(String puuid);
+    public CompletableFuture<List<LeagueEntry>> byPuuid(String puuid);
+
+    public CompletableFuture<LeagueEntry> soloQ(String puuid);
+
+    public CompletableFuture<LeagueEntry> flexQ(String puuid);
 
     public CompletableFuture<LeagueList> challengerByQueue(LeagueQueueType queueType);
 
@@ -21,6 +26,7 @@ public interface LeagueAPI {
 
     public CompletableFuture<LeagueList> byLeagueId(String leagueId);
 
-    public CompletableFuture<Set<LeagueEntry>> byQueue(LeagueQueueType queueType, LeagueTier tier, LeagueRank division, int page);
+    public CompletableFuture<List<LeagueEntry>> byQueue(LeagueQueueType queueType, LeagueTier tier, LeagueRank division,
+            int page);
 
 }
