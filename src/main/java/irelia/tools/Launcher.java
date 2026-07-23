@@ -1,7 +1,6 @@
 package irelia.tools;
 
 import java.io.InputStream;
-import java.time.Duration;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.function.Consumer;
@@ -9,7 +8,6 @@ import java.util.function.Consumer;
 import irelia.core.Irelia;
 import irelia.core.IreliaException;
 import irelia.core.Platform;
-import irelia.data.account.Account;
 import irelia.tools.lib.IreliaEnumBuilder;
 
 public class Launcher {
@@ -67,7 +65,7 @@ public class Launcher {
 	public static void main(String[] args) throws InterruptedException {
 		Launcher l = new Launcher();
 		String key = l.getKeyFromProperties();
-		Irelia irelia = l.startIrelia(key, Platform.EUW1, Locale.FRANCE);
+		Irelia irelia = l.startIrelia(key, Platform.EUW1, Locale.US);
 		try {
 			IreliaEnumBuilder eb = new IreliaEnumBuilder(irelia);
 			eb.buildChampions();
