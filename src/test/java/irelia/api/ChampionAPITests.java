@@ -1,5 +1,6 @@
 package irelia.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -20,9 +21,9 @@ public class ChampionAPITests extends IreliaTests{
     public void rotations(){
         ChampionRotation rotations = irelia.champion().rotations().join();
         assertNotNull(rotations);
-        assertNotEquals(0, rotations.getMaxNewPlayerLevel());
-        assertNotEquals(0,rotations.getFreeChampionIds().size());
-        assertNotEquals(0,rotations.getFreeChampionIdsForNewPlayers().size());
+        assertEquals(11, rotations.getMaxNewPlayerLevel());
+        assertNotEquals(0,rotations.getNewplayer().size());
+        assertNotEquals(0,rotations.getSr().size());
     }
 
     @Test
@@ -31,7 +32,6 @@ public class ChampionAPITests extends IreliaTests{
         for (int i = 0; i < 31; i++) {
             futures.add(irelia.champion().rotations());
         }
-
         CompletableFuture<Void> all = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
         all.join();
         futures.forEach(f -> assertNotNull(f));

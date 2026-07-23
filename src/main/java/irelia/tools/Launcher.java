@@ -10,6 +10,7 @@ import irelia.core.Irelia;
 import irelia.core.IreliaException;
 import irelia.core.Platform;
 import irelia.data.account.Account;
+import irelia.tools.lib.IreliaEnumBuilder;
 
 public class Launcher {
 
@@ -68,15 +69,11 @@ public class Launcher {
 		String key = l.getKeyFromProperties();
 		Irelia irelia = l.startIrelia(key, Platform.EUW1, Locale.FRANCE);
 		try {
-			Account acc = irelia.account().byRiotId("Guillaumezz", "TOP").get();
-			System.out.println(acc);
-			// Summoner sum = irelia.summoner().byPuuid(acc.getPuuid()).get();
-			// irelia.ddragon().getProfileIcon(sum.getProfileIconId()).get();
+			IreliaEnumBuilder eb = new IreliaEnumBuilder(irelia);
+			eb.buildChampions();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Thread.sleep(Duration.ofSeconds(3));
-
 		irelia.stop();
 	}
 }

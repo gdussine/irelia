@@ -83,6 +83,7 @@ public enum Champions {
 	Leona(89,"Leona"),
 	Lillia(876,"Lillia"),
 	Lissandra(127,"Lissandra"),
+	Locke(805,"Locke"),
 	Lucian(236,"Lucian"),
 	Lulu(117,"Lulu"),
 	Lux(99,"Lux"),

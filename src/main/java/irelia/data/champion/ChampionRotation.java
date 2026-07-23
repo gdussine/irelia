@@ -4,26 +4,28 @@ import java.util.List;
 
 public class ChampionRotation {
 
-    private int maxNewPlayerLevel;
-    private List<Integer> freeChampionIdsForNewPlayers;
-    private List<Integer> freeChampionIds;
+    private int maxNewPlayerLevel = 11;
+
+    private List<Integer> newplayer;
+    private List<Integer> sr;
+
     public int getMaxNewPlayerLevel() {
         return maxNewPlayerLevel;
     }
     public void setMaxNewPlayerLevel(int maxNewPlayerLevel) {
         this.maxNewPlayerLevel = maxNewPlayerLevel;
     }
-    public List<Integer> getFreeChampionIdsForNewPlayers() {
-        return freeChampionIdsForNewPlayers;
+    public List<Integer> getNewplayer() {
+        return newplayer;
     }
-    public void setFreeChampionIdsForNewPlayers(List<Integer> freeChampionIdsForNewPlayers) {
-        this.freeChampionIdsForNewPlayers = freeChampionIdsForNewPlayers;
+    public void setNewplayer(List<Integer> newplayer) {
+        this.newplayer = newplayer;
     }
-    public List<Integer> getFreeChampionIds() {
-        return freeChampionIds;
+    public List<Integer> getSr() {
+        return sr;
     }
-    public void setFreeChampionIds(List<Integer> freeChampionIds) {
-        this.freeChampionIds = freeChampionIds;
+    public void setSr(List<Integer> sr) {
+        this.sr = sr;
     }
     
     

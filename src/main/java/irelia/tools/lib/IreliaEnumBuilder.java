@@ -60,7 +60,7 @@ public class IreliaEnumBuilder {
                     irelia.community().queue().join().stream().forEach(x -> {
                         if (x.getName().equals("Custom") || x.getGameSelectPriority() > 0) {
                             String key = "QUEUE_%s_%d".formatted(
-                                    x.getShortName().replace(" ", "_").replaceAll("[/\\(\\)/]", "").toUpperCase(),
+                                    x.getShortName().replace(" ", "_").replaceAll("[/\\(\\)\\:/]", "").toUpperCase(),
                                     x.getId());
                             map.put(key, x);
                         }

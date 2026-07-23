@@ -1,5 +1,7 @@
 package irelia.data.community;
 
+import java.util.List;
+
 public class QueueInfo {
 
     private int id;
@@ -11,6 +13,11 @@ public class QueueInfo {
     private String gameSelectCategory;
     private int gameSelectPriority;
     private boolean isSkillTreeQueue;
+    private boolean isLimitedTimeQueue;
+    private boolean isBotHonoringAllowed;
+    private boolean hidePlayerPosition;
+    private List<Integer> viableChampionRoster;
+    private String pickMode;
 
     public QueueInfo() {
     }
@@ -85,6 +92,46 @@ public class QueueInfo {
 
     public void setIsSkillTreeQueue(boolean isSkillTreeQueue) {
         this.isSkillTreeQueue = isSkillTreeQueue;
+    }
+
+    public boolean getIsLimitedTimeQueue() {
+        return isLimitedTimeQueue;
+    }
+
+    public void setIsLimitedTimeQueue(boolean isLimitedTimeQueue) {
+        this.isLimitedTimeQueue = isLimitedTimeQueue;
+    }
+
+    public boolean getIsBotHonoringAllowed() {
+        return isBotHonoringAllowed;
+    }
+
+    public void setIsBotHonoringAllowed(boolean isBotHonoringAllowed) {
+        this.isBotHonoringAllowed = isBotHonoringAllowed;
+    }
+
+    public boolean getHidePlayerPosition() {
+        return hidePlayerPosition;
+    }
+
+    public void setHidePlayerPosition(boolean hidePlayerPosition) {
+        this.hidePlayerPosition = hidePlayerPosition;
+    }
+
+    public List<Integer> getViableChampionRoster() {
+        return viableChampionRoster;
+    }
+
+    public void setViableChampionRoster(List<Integer> viableChampionRoster) {
+        this.viableChampionRoster = viableChampionRoster;
+    }
+
+    public String getPickMode() {
+        return pickMode;
+    }
+
+    public void setPickMode(String pickMode) {
+        this.pickMode = pickMode;
     }
 
     @Override
