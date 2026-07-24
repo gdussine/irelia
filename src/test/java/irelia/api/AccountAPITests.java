@@ -6,19 +6,22 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import irelia.IreliaTests;
+import irelia.IreliaExtension;
+import irelia.core.Irelia;
 import irelia.core.IreliaException;
 import irelia.data.account.Account;
 
 @Tag("APITest")
-public class AccountAPITests extends IreliaTests {
+@ExtendWith(IreliaExtension.class)
+public class AccountAPITests {
 
     @ParameterizedTest
     @ValueSource(strings = { "Guillaume#TOP"})
-    public void existingAccount(String riotId) throws IreliaException {
+    public void existingAccount(String riotId, Irelia irelia) throws IreliaException {
         String[] accountInfo = riotId.split("#");
         Account account = irelia.account().byRiotId(riotId).join();
         checkAccount(account, accountInfo[0], accountInfo[1]);
@@ -32,20 +35,20 @@ public class AccountAPITests extends IreliaTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "TestNoTag", "#TAG", "GameName#"})
-    public void riotIdMissingHash(String riotId) {
+    public void riotIdMissingHash(String riotId, Irelia irelia) {
         assertThrowsExactly(IllegalArgumentException.class, () -> irelia.account().byRiotId(riotId));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"TheGameNameIsVeryVeryVeryLong#TEST", "Name#TagTooLong"})
-    public void riotIdTooLong(String riotId){
+    public void riotIdTooLong(String riotId, Irelia irelia){
         String[] accountInfo = riotId.split("#");
         assertThrowsExactly(IllegalArgumentException.class,() -> irelia.account().byRiotId(accountInfo[0],accountInfo[1]));
     }
 
     @ParameterizedTest
     @ValueSource (strings = {"Guillaume#EUW9"})
-    public void nonExistingAccount(String riotId){
+    public void nonExistingAccount(String riotId, Irelia irelia){
         Account account = irelia.account().byRiotId(riotId).join();
         assertNull(account);
     }

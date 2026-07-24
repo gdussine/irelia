@@ -95,7 +95,7 @@ public class RiotServices implements RiotAPI {
     }
 
     @Override
-    public MasteryAPI mastery() {
+    public MasteryService mastery() {
         return mastery;
     }
 

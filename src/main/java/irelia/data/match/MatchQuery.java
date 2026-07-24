@@ -1,8 +1,9 @@
 package irelia.data.match;
 
 import irelia.data.community.QueueTypes;
+import irelia.request.core.RiotRequestQuery;
 
-public class MatchQuery {
+public class MatchQuery extends RiotRequestQuery{
 
     public enum Type {
         ranked, normal, tourney, tutorial;
@@ -60,19 +61,9 @@ public class MatchQuery {
     }
 
     public String getQueryString(){
-        StringBuilder sb = new StringBuilder();
         Object[] attr = {count, start, startTime, endTime, queue, type};
         String[] attrName = {"count", "start", "startTime", "endTime", "queue", "type"};
-        for(int i = 0; i<attr.length; i++){
-            if(attr[i] == null)
-                continue;
-            if(!sb.isEmpty())
-                sb.append("&");
-            sb.append(attrName[i]).append("=").append(attr[i]);
-        }
-        return sb.insert(0, "?").toString();
-
-
+        return super.getQueryString(attrName,attr);
     }
 
 }

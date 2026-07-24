@@ -12,11 +12,8 @@ import irelia.service.RateLimitedRiotService;
 public class SummonerService extends RateLimitedRiotService implements SummonerAPI {
 
 	private final static String BY_PUUID_URI = "lol/summoner/v4/summoners/by-puuid/%s";
-	
-
 
 	private TypeReference<Summoner> type = new TypeReference<Summoner>() {};
-
 
 	@Override
 	public CompletableFuture<Summoner> byPuuid(String puuid) {

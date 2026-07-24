@@ -10,15 +10,18 @@ import java.util.concurrent.CompletableFuture;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import irelia.IreliaTests;
+import irelia.IreliaExtension;
+import irelia.core.Irelia;
 import irelia.data.champion.ChampionRotation;
 
 @Tag("APITest")
-public class ChampionAPITests extends IreliaTests{
+@ExtendWith(IreliaExtension.class)
+public class ChampionAPITests {
 
     @Test
-    public void rotations(){
+    public void rotations(Irelia irelia){
         ChampionRotation rotations = irelia.champion().rotations().join();
         assertNotNull(rotations);
         assertEquals(11, rotations.getMaxNewPlayerLevel());
@@ -27,7 +30,7 @@ public class ChampionAPITests extends IreliaTests{
     }
 
     @Test
-    public void rotationRateLimite(){
+    public void rotationRateLimite(Irelia irelia){
         List<CompletableFuture<ChampionRotation>> futures = new ArrayList<>();
         for (int i = 0; i < 31; i++) {
             futures.add(irelia.champion().rotations());

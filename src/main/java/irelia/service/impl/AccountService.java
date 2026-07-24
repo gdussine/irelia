@@ -6,12 +6,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import irelia.api.AccountAPI;
 import irelia.data.account.Account;
+import irelia.data.account.AccountDTO;
 import irelia.request.core.RiotRequest;
 import irelia.service.RateLimitedRiotService;
 
 public class AccountService extends RateLimitedRiotService implements AccountAPI {
 
-	private TypeReference<Account> type = new TypeReference<Account>() {};
+	private TypeReference<AccountDTO> type = new TypeReference<AccountDTO>() {};
+
 	private final static String BY_RIOT_ID_URI = "riot/account/v1/accounts/by-riot-id/%s/%s";
 	private final static String BY_ID = "riot/account/v1/accounts/by-puuid/%s";
 
@@ -31,21 +33,22 @@ public class AccountService extends RateLimitedRiotService implements AccountAPI
 	}
 
 	public CompletableFuture<Account> byRiotId(Account account) {
-		RiotRequest<Account> request = this.createAPIRequest(type, irelia.getRegion(), BY_RIOT_ID_URI,
+		RiotRequest<AccountDTO> request = this.createAPIRequest(type, irelia.getRegion(), BY_RIOT_ID_URI,
 				account.getGameName(), account.getTagLine());
-		return getRiotObject(request);
+		return getRiotObject(request).thenApply(x -> new Account(x));
 	}
 
 	@Deprecated
 	public CompletableFuture<Account> byId(String puuid) {
-		RiotRequest<Account> request = this.createAPIRequest(type, irelia.getRegion(), BY_ID, puuid);
-		return getRiotObject(request);
+		TypeReference<AccountDTO> dtoType = new TypeReference<AccountDTO>() {};
+		RiotRequest<AccountDTO> request = this.createAPIRequest(dtoType, irelia.getRegion(), BY_ID, puuid);
+		return getRiotObject(request).thenApply(x-> new Account(x));
 	}
 
 	@Override
 	public CompletableFuture<Account> byPuuid(String puuid) {
-		RiotRequest<Account> request = this.createAPIRequest(type, irelia.getRegion(), BY_ID, puuid);
-		return getRiotObject(request);
+		RiotRequest<AccountDTO> request = this.createAPIRequest(type, irelia.getRegion(), BY_ID, puuid);
+		return getRiotObject(request).thenApply(x-> new Account(x));
 	}
 
 }

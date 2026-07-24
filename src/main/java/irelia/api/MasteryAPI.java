@@ -16,6 +16,8 @@ public interface MasteryAPI {
     public CompletableFuture<ChampionMastery> byChampion(String puuid, Champions champions);
 
     public CompletableFuture<List<ChampionMastery>> top(String puuid);
+
+    public CompletableFuture<List<ChampionMastery>> top(String puuid, int count);
     
     public CompletableFuture<Integer> score(String puuid);
     

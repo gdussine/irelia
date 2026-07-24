@@ -6,6 +6,16 @@ public class Account {
 	private String gameName;
 	private String tagLine;
 
+	public Account(){
+
+	}
+
+	public Account(AccountDTO dto){
+		this.puuid = dto.puuid();
+		this.gameName = dto.gameName();
+		this.tagLine = dto.tagLine();
+	}
+
 	public String getPuuid() {
 		return puuid;
 	}

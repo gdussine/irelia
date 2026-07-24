@@ -41,6 +41,12 @@ public class LeagueService extends RateLimitedRiotService implements LeagueAPI {
 	}
 
 	@Override
+	public CompletableFuture<LeagueEntry> teamQ(String puuid) {
+		return byPuuid(puuid).thenApply(list -> list.stream()
+				.filter(e -> e.getQueueType().equals(LeagueQueueType.RANKED_PREMADE_5x5)).findAny().orElse(null));
+	}
+
+	@Override
 	public CompletableFuture<LeagueList> challengerByQueue(LeagueQueueType queueType) {
 		return apexByQueue(queueType, LeagueTier.CHALLENGER);
 	}

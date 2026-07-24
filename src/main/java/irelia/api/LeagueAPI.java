@@ -1,7 +1,6 @@
 package irelia.api;
 
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import irelia.data.league.LeagueEntry;
@@ -17,6 +16,8 @@ public interface LeagueAPI {
     public CompletableFuture<LeagueEntry> soloQ(String puuid);
 
     public CompletableFuture<LeagueEntry> flexQ(String puuid);
+
+    public CompletableFuture<LeagueEntry> teamQ(String puuid);
 
     public CompletableFuture<LeagueList> challengerByQueue(LeagueQueueType queueType);
 

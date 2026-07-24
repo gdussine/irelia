@@ -121,5 +121,6 @@ public class ChampionMastery {
     public void setMilestoneGrades(List<String> milestoneGrades) {
         this.milestoneGrades = milestoneGrades;
     }
+    
 
 }

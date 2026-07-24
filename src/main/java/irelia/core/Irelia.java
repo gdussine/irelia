@@ -44,7 +44,6 @@ public class Irelia implements RiotAPI {
 	private IreliaQueueManager queueManager;
 
 	public Irelia(String key, Platform platform, Locale locale) {
-		super();
 		this.key = key;
 		this.platform = platform;
 		this.region = platform.getRegion();
@@ -57,10 +56,10 @@ public class Irelia implements RiotAPI {
 		this.services = new RiotServices(this);
 	}
 
-	public void start() throws IreliaException {
+	public Irelia start() throws IreliaException {
 		if (running) {
 			this.log.warn("Irelia is already running.");
-			return;
+			return this;
 		}
 		this.queueManager.start(httpQueue);
 		this.queueManager.start(appQueue);
@@ -72,6 +71,7 @@ public class Irelia implements RiotAPI {
 		} catch (CompletionException e) {
 			throw IreliaException.failedStart(e);
 		}
+		return this;
 	}
 
 	public void stop() throws IreliaException {
@@ -178,7 +178,7 @@ public class Irelia implements RiotAPI {
 
 	@Override
 	public MasteryService mastery() {
-		return mastery();
+		return services.mastery();
 	}
 
 }
