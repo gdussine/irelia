@@ -12,43 +12,34 @@ import irelia.service.RateLimitedRiotService;
 
 public class AccountService extends RateLimitedRiotService implements AccountAPI {
 
-	private TypeReference<AccountDTO> type = new TypeReference<AccountDTO>() {};
+	private TypeReference<AccountDTO> type = new TypeReference<AccountDTO>() {
+	};
+
+	private TypeReference<byte[]> b = new TypeReference<byte[]>() {
+	};
 
 	private final static String BY_RIOT_ID_URI = "riot/account/v1/accounts/by-riot-id/%s/%s";
 	private final static String BY_ID = "riot/account/v1/accounts/by-puuid/%s";
 
 	@Override
-	public CompletableFuture<Account> byRiotId(String gameName, String tagLine) {
-		Account temp = new Account();
-		temp.setGameName(gameName);
-		temp.setTagLine(tagLine);
-		return byRiotId(temp);
-	}
-
-	@Override
 	public CompletableFuture<Account> byRiotId(String riotId) {
 		Account temp = new Account();
 		temp.setRiotId(riotId);
-		return byRiotId(temp);
+		return byRiotId(temp.getGameName(), temp.getTagLine());
 	}
 
-	public CompletableFuture<Account> byRiotId(Account account) {
+	public CompletableFuture<Account> byRiotId(String gameName, String tagLine) {
+		Account temp = new Account(null, gameName, tagLine);
 		RiotRequest<AccountDTO> request = this.createAPIRequest(type, irelia.getRegion(), BY_RIOT_ID_URI,
-				account.getGameName(), account.getTagLine());
-		return getRiotObject(request).thenApply(x -> new Account(x));
-	}
-
-	@Deprecated
-	public CompletableFuture<Account> byId(String puuid) {
-		TypeReference<AccountDTO> dtoType = new TypeReference<AccountDTO>() {};
-		RiotRequest<AccountDTO> request = this.createAPIRequest(dtoType, irelia.getRegion(), BY_ID, puuid);
-		return getRiotObject(request).thenApply(x-> new Account(x));
+				temp.getGameName(), temp.getTagLine());
+		RiotRequest<byte[]> request2 = this.createAPIRequest(b, irelia.getRegion(), BY_RIOT_ID_URI,
+				temp.getGameName(), temp.getTagLine());
+		return getRiotObject(request).thenApply(x -> x == null ? null : new Account(x));
 	}
 
 	@Override
 	public CompletableFuture<Account> byPuuid(String puuid) {
 		RiotRequest<AccountDTO> request = this.createAPIRequest(type, irelia.getRegion(), BY_ID, puuid);
-		return getRiotObject(request).thenApply(x-> new Account(x));
+		return getRiotObject(request).thenApply(x -> x == null ? null : new Account(x));
 	}
-
 }

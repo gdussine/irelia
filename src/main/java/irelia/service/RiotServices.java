@@ -2,7 +2,6 @@ package irelia.service;
 
 import java.lang.reflect.Field;
 
-import irelia.api.MasteryAPI;
 import irelia.api.RiotAPI;
 import irelia.core.Irelia;
 import irelia.service.impl.AccountService;
@@ -98,5 +97,7 @@ public class RiotServices implements RiotAPI {
     public MasteryService mastery() {
         return mastery;
     }
+
+    
 
 }

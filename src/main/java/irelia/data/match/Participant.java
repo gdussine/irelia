@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import irelia.data.account.Account;
+import irelia.data.account.AccountDTO;
 
 public class Participant {
     private int allInPings; // Yellow crossed swords.
@@ -1342,10 +1343,7 @@ public class Participant {
     }
 
     public Account getAccount() {
-        Account account = new Account();
-        account.setGameName(riotIdGameName);
-        account.setTagLine(riotIdTagline);
-        account.setPuuid(puuid);
+        Account account = new Account(puuid, riotIdGameName, riotIdTagline);
         return account;
     }
 

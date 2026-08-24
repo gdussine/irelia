@@ -97,15 +97,8 @@ public class LeagueEntry {
 		this.inactive = inactive;
 	}
 
-	// public MiniSeries getMiniSeries() {
-	// 	return miniSeries;
-	// }
-
-	// public void setMiniSeries(MiniSeries miniSeries) {
-	// 	this.miniSeries = miniSeries;
-	// }
-
 	public int getElo(){
+
 		return this.getTier().getEloOffset() + this.getRank().getEloOffset() + this.leaguePoints;
 	}
 

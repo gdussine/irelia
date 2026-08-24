@@ -8,7 +8,7 @@ public class RiotDataMapper {
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    public <T> T asRiotObject(RiotResponse<T> response) {
+    public <T> T asRiotDTO(RiotResponse<T> response) {
         try {
             return mapper.readValue(response.body(), response.getRequest().getType());
         } catch (IOException e) {
@@ -16,7 +16,7 @@ public class RiotDataMapper {
         }
     }
 
-    public byte[] asData(RiotResponse<byte[]> response) {
+    public byte[] asBytes(RiotResponse<byte[]> response) {
         return response.body();
     }
 

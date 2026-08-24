@@ -6,14 +6,19 @@ public class Account {
 	private String gameName;
 	private String tagLine;
 
-	public Account(){
+	public Account() {
 
 	}
 
-	public Account(AccountDTO dto){
-		this.puuid = dto.puuid();
-		this.gameName = dto.gameName();
-		this.tagLine = dto.tagLine();
+	public Account(String puuid, String gameName, String tagLine) {
+		setPuuid(puuid);
+		setGameName(gameName);
+		setTagLine(tagLine);
+
+	}
+
+	public Account(AccountDTO dto) {
+		this(dto.puuid(), dto.gameName(), dto.tagLine());
 	}
 
 	public String getPuuid() {
@@ -28,20 +33,10 @@ public class Account {
 		return gameName;
 	}
 
-	public String getRiotId(){
-		return gameName + "#" + tagLine ;
-	}
-
-	public void setRiotId(String riotId){
-		String[] tab = riotId.split("#");
-		if(tab.length != 2 )
-			throw new IllegalArgumentException("The Riot Id must include '#' to separate gameName and tagLine.");
-		this.setGameName(tab[0]);
-		this.setTagLine(tab[1]);
-	}
-
 	public void setGameName(String gameName) {
-		if(gameName.length() < 3 || gameName.length() > 16) 
+		if(gameName == null)
+			return;
+		if (gameName.length() < 3 || gameName.length() > 16)
 			throw new IllegalArgumentException("The gameName must be 3–16 alphanumeric characters long.");
 		this.gameName = gameName;
 	}
@@ -51,11 +46,25 @@ public class Account {
 	}
 
 	public void setTagLine(String tagLine) {
-		if(tagLine.length() < 3 || tagLine.length() > 5) 
+		if(tagLine == null)
+			return;
+		if (tagLine.length() < 3 || tagLine.length() > 5)
 			throw new IllegalArgumentException("The tagLine must be 3–5 alphanumeric characters long.");
 		this.tagLine = tagLine;
 	}
-	
+
+	public String getRiotId() {
+		return gameName + "#" + tagLine;
+	}
+
+	public void setRiotId(String riotId) {
+		String[] tab = riotId.split("#");
+		if (tab.length != 2)
+			throw new IllegalArgumentException("The Riot Id must include '#' to separate gameName and tagLine.");
+		this.setGameName(tab[0]);
+		this.setTagLine(tab[1]);
+	}
+
 	@Override
 	public String toString() {
 		return getRiotId();
@@ -85,7 +94,5 @@ public class Account {
 			return false;
 		return true;
 	}
-
-	
 
 }

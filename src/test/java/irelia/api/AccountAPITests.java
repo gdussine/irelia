@@ -11,8 +11,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import irelia.IreliaExtension;
+import irelia.IreliaTestUtils;
 import irelia.core.Irelia;
-import irelia.core.IreliaException;
 import irelia.data.account.Account;
 
 @Tag("APITest")
@@ -21,7 +21,7 @@ public class AccountAPITests {
 
     @ParameterizedTest
     @ValueSource(strings = { "Guillaume#TOP"})
-    public void existingAccount(String riotId, Irelia irelia) throws IreliaException {
+    public void existingAccount(String riotId, Irelia irelia) throws Exception {
         String[] accountInfo = riotId.split("#");
         Account account = irelia.account().byRiotId(riotId).join();
         checkAccount(account, accountInfo[0], accountInfo[1]);

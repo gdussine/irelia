@@ -1,5 +1,6 @@
 package irelia.service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -74,9 +75,9 @@ public class RiotService {
 		});
 	}
 
-	protected <X> CompletableFuture<X> getRiotObject(RiotRequest<X> request) {
+	public <X> CompletableFuture<X> getRiotObject(RiotRequest<X> request) {
 		return this.sendAsync(request)
-				.thenApply(response -> mapper.asRiotObject(response))
+				.thenApply(response -> mapper.asRiotDTO(response))
 				.handle((riotObject, ex) -> {
 					if (ex == null)
 						return riotObject;
@@ -88,13 +89,22 @@ public class RiotService {
 				});
 	}
 
-	protected CompletableFuture<byte[]> getData(RiotRequest<byte[]> request) {
-		return this.sendAsync(request).thenApply(response -> mapper.asData(response))
+	public CompletableFuture<byte[]> getData(RiotRequest<byte[]> request) {
+		return this.sendAsync(request).thenApply(response -> mapper.asBytes(response))
 				.handle((data, ex) -> {
 					if (ex != null)
 						return null;
 					return data;
 				});
+	}
+
+	public CompletableFuture<String> getString(RiotRequest<byte[]> request){
+		return this.sendAsync(request).thenApply(response -> new String(mapper.asBytes(response), StandardCharsets.UTF_8))
+			.handle((data,ex) ->{
+				if(ex != null)
+					return null; 
+				return data;
+			});
 	}
 
 }
