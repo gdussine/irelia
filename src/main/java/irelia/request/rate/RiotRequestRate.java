@@ -21,18 +21,6 @@ public class RiotRequestRate {
 
 	}
 
-	// public void setHeader(String header) {
-	// if (header == null)
-	// return;
-	// Matcher matcher = PATTERN.matcher(header);
-	// if (!matcher.find())
-	// return;
-	// if (matcher.groupCount() != 2)
-	// return;
-	// this.count = Integer.parseInt(matcher.group(1));
-	// this.time = Integer.parseInt(matcher.group(2));
-	// }
-
 	public int getCount() {
 		return count;
 	}
